@@ -25,6 +25,31 @@ body {
 p {
   font-size: 16px;
 }
+
 h3 {
   font-size: 20px;
+}
+
+
+
+
+@layer utilities {
+  .text-outline {
+    -webkit-text-stroke: 1px black;
+    color: transparent;
+  }
+
+  .text-outline-white {
+    -webkit-text-stroke: 1px white;
+    color: transparent;
+  }
+
+  .text-outline-brand {
+    -webkit-text-stroke: 1px #C3C3C3;
+    color: transparent;
+  }
+
+  .customboxshadow {
+    box-shadow: 4px 4px 50px 0 #37353633;
+  }
 }
