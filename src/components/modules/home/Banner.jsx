@@ -6,7 +6,7 @@ import React from "react";
 export default function Banner() {
   return (
     <section
-      className="relative w-full h-[900px] md:h-[650px] bg-cover bg-center flex items-center overflow-hidden"
+      className="relative w-full h-[900px] md:h-screen bg-cover bg-center flex items-center overflow-hidden"
       style={{ backgroundImage: `url('/images/bannerBg.jpg')` }}
     >
       {/* Overlay */}
