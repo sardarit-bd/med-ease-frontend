@@ -1,9 +1,19 @@
 "use client";
+import SpinLoader from "@/components/shared/SpinLoader";
 import Image from "next/image";
+import { useState } from "react";
 import Vector_Plus from "../../../../public/icons/Vector_Plus.png";
 
 
 export default function ContactFormSection() {
+
+
+
+  const [isLoading, setIsLoading] = useState(false);
+
+
+
+
   return (
     <section className="relative py-20 bg-[#61D0BF0F] overflow-hidden">
 
@@ -74,8 +84,9 @@ export default function ContactFormSection() {
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3 rounded-md text-white font-medium shadow-md transition-transform hover:scale-[1.02] bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white"
+                className="w-full mt-2 py-3 rounded-md text-white font-medium shadow-md transition-transform hover:scale-[1.02] bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white flex items-center justify-center gap-3"
               >
+                {isLoading && <SpinLoader />}
                 Envoyer ma Demande
               </button>
             </form>
