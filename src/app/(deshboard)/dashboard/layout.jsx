@@ -1,11 +1,25 @@
-export default function DashboardLayout({
-    children,
-}) {
+"use client"
+
+import { useState } from "react";
+import Sidebar from "../../../components/modules/dashboard/Dasboardsidebar";
+import Header from "../../../components/modules/dashboard/DesboardHeader";
+
+
+export default function DashboardLayout({ children }) {
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     return (
-        <div className="flex min-h-screen flex-col space-y-6">
-            <div className="grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-                {/* add dashboard menu */}
-                <main className="flex w-full flex-1 flex-col overflow-hidden container mx-auto px-4 p-6 md:p-12">{children}</main>
+        <div className="flex min-h-screen bg-slate-50">
+            {/* Mobile overlay */}
+            {sidebarOpen && (
+                <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+            )}
+
+            <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+            <div className="flex-1 flex flex-col overflow-hidden">
+                <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+                {children}
             </div>
         </div>
     )

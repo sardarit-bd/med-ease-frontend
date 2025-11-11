@@ -52,4 +52,32 @@ h3 {
   .customboxshadow {
     box-shadow: 4px 4px 50px 0 #37353633;
   }
+
+  /* === Hide scrollbar utility === */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Edge */
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    /* IE & Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+}
+
+
+
+
+/* Remove blue background from Chrome/Edge autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
+  caret-color: #000 !important;
+  transition: background-color 9999s ease-in-out 0s;
 }

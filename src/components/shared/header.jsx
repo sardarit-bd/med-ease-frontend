@@ -4,7 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+
+const services = [
+  { name: "Offre de soins", link: "/services/offre-de-soins" },
+  { name: "Cartographie", link: "/services/cartographie" },
+  { name: "Lits d’aval", link: "/services/lits-d-aval" },
+  { name: "SAS", link: "/services/sas" },
+  { name: "Transports Sanitaires", link: "/services/transports-sanitaires" },
+  { name: "RH", link: "/services/rh" },
+  { name: "Télémédecine", link: "/services/telemedecine" },
+  { name: "Pharma", link: "/services/pharma" },
+  { name: "Studio", link: "/services/studio" },
+  { name: "Conciergerie Médicale", link: "/services/conciergerie-medicale" },
+];
+
+
 export default function Header() {
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -34,13 +50,16 @@ export default function Header() {
               Services <ChevronDown size={16} />
             </div>
             {/* Dropdown */}
-            <div className="absolute hidden group-hover:flex flex-col bg-white border border-gray-100 rounded-md shadow-md mt-2 w-40">
-              <Link href="#" className="px-4 py-2 hover:bg-[var(--light-background)] text-sm">
-                Service 1
-              </Link>
-              <Link href="#" className="px-4 py-2 hover:bg-[var(--light-background)] text-sm">
-                Service 2
-              </Link>
+            <div className="absolute hidden group-hover:flex flex-col bg-white border border-gray-100 rounded-md shadow-md mt-0 w-40">
+              {
+                services?.map((item, index) => {
+                  return (
+                    <Link key={index} href={item?.link} className="px-4 py-2 hover:bg-[var(--light-background)] text-sm">
+                      {item.name}
+                    </Link>
+                  )
+                })
+              }
             </div>
           </div>
 
