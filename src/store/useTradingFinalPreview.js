@@ -10,9 +10,6 @@ const useTradingFinalPreview = create((set, get) => ({
             tradingcart: state.tradingcart.filter((item, index) => item.productId !== id),
         })),
 
-
-
-
     // Empty the entire cart
     clearCart: () => set({ tradingcart: [] }),
 

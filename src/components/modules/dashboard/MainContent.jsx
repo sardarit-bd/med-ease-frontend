@@ -1,13 +1,15 @@
-import ActivitiesCard from "./cards/activities-card"
-import CalendarCard from "./cards/calendar-card"
-import ClientsCard from "./cards/clients-card"
-import EvolutionCard from "./cards/evolution-card"
-import HopitauxCard from "./cards/hopitaux-card"
-import ObjectifCard from "./cards/objectif-card"
-import PartenairesCard from "./cards/partenaires-card"
-import ProspectsCard from "./cards/prospects-card"
-import RDVCard from "./cards/rdv-card"
-import UrgencesCard from "./cards/urgences-card"
+import ActivitiesCard from "./cards/ActivitiesCard";
+import CalendarRdvCard from "./cards/CalendarRdvCard";
+import CarePathCard from "./cards/CarePathCard";
+import EvolutionCard from "./cards/EvolutionCard";
+import HopitauxVilleCard from "./cards/HopitauxVilleCard";
+import ObjectifCard from "./cards/ObjectifCard";
+import PartenairesCard from "./cards/PartenairesCard";
+import ProspectsClientsCard from "./cards/ProspectsClientsCard";
+import QualityCard from "./cards/QualityCard";
+import SeniorCard from "./cards/SeniorCard";
+import UrgencesCard from "./cards/UrgencesCard";
+
 
 export default function MainContent() {
   return (
@@ -24,62 +26,22 @@ export default function MainContent() {
           </div>
 
           {/* Column 2 - Center-Left */}
-          <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-            <UrgencesCard />
-            <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4">Senior</h3>
-              <div className="space-y-3 sm:space-y-4">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-slate-900">760</div>
-                  <div className="text-xs sm:text-sm text-slate-500">Structures</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-slate-900">88%</div>
-                  <div className="text-xs sm:text-sm text-slate-500">Taux d'occupation</div>
-                </div>
+          <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6 col-span-2">
+            <div className="flex gap-3 md:gap-5 lg:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+                <UrgencesCard />
+                <SeniorCard />
               </div>
+              <HopitauxVilleCard />
             </div>
-            <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4">Ville</h3>
-              <div className="space-y-3 sm:space-y-4">
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-slate-900">60</div>
-                  <div className="text-xs sm:text-sm text-slate-500">Médecin disponibles</div>
-                </div>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-bold text-slate-900">40</div>
-                  <div className="text-xs sm:text-sm text-slate-500">Médecin recevant nouveaux patients</div>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200">
-              <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-3 sm:mb-4">Qualité</h3>
-              <div className="space-y-2 sm:space-y-3">
-                <div>
-                  <h4 className="text-xs sm:text-sm font-semibold text-teal-600 mb-1">Messages</h4>
-                  <p className="text-xs text-slate-600">Garnier David, Transfert d'hôpital</p>
-                </div>
-                <div>
-                  <h4 className="text-xs sm:text-sm font-semibold text-teal-600 mb-1">Signalements</h4>
-                  <p className="text-xs text-slate-600">
-                    Mme X, pour l'Hôpital Lacomte, hospitalisation le 15 novembre
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Column 3 - Center-Right (Hidden on mobile, visible on tablet+) */}
-          <div className="hidden sm:flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-            <HopitauxCard />
+            <CarePathCard />
+            <QualityCard />
           </div>
 
           {/* Column 4 - Right (Stack with Column 3 on tablet) */}
           <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6">
-            <CalendarCard />
-            <RDVCard />
-            <ProspectsCard />
-            <ClientsCard />
+            <CalendarRdvCard />
+            <ProspectsClientsCard />
           </div>
         </div>
       </div>

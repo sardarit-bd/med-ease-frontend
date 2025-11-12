@@ -31,13 +31,13 @@ export default function DesboardHeader({ sidebarOpen, setSidebarOpen }) {
             </div>
 
             {/* Center: Navigation - Responsive Buttons */}
-            <div className="hidden xs:flex items-center justify-center gap-1 sm:gap-2">
+            <div className="hidden md:flex items-center justify-center gap-1 sm:gap-2">
               {/* Desktop: Show all 6 buttons */}
               <div className="hidden md:flex items-center gap-2">
                 {navButtons.map((btn) => (
                   <button
                     key={btn}
-                    className="px-3 sm:px-4 py-2 rounded-full bg-teal-500 hover:bg-teal-600 text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 whitespace-nowrap"
+                    className="px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white text-xs sm:text-sm font-medium transition-all duration-200 active:scale-95 whitespace-nowrap"
                   >
                     {btn}
                   </button>
