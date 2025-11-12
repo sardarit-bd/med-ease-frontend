@@ -47,7 +47,7 @@ export default function Dasboardsidebar({ isOpen, setIsOpen }) {
     <>
       {/* Mobile sidebar - fixed overlay */}
       <div
-        className={`fixed lg:relative top-0 left-0 h-screen z-50 w-56 bg-white text-gray-700 transition-transform duration-300 overflow-y-auto scrollbar-hide ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`sticky lg:relative top-0 left-0 h-screen z-50 w-56 bg-white text-gray-700 transition-transform duration-300 overflow-y-auto scrollbar-hide ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
           }`}
       >
         {/* Logo */}
