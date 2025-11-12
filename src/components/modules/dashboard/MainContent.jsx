@@ -27,8 +27,8 @@ export default function MainContent() {
 
           {/* Column 2 - Center-Left */}
           <div className="flex flex-col gap-3 sm:gap-4 md:gap-5 lg:gap-6 col-span-2">
-            <div className="flex gap-3 md:gap-5 lg:gap-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-5 lg:gap-6">
+              <div className="grid grid-cols-1 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
                 <UrgencesCard />
                 <SeniorCard />
               </div>

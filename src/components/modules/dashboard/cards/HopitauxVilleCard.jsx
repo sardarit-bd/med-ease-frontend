@@ -15,7 +15,7 @@ export default function HopitauxVilleCard() {
     ];
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6">
             {/* --- HÔPITAUX CARD --- */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-5">
                 <h3 className="font-semibold text-gray-800 text-base md:text-lg mb-3">
