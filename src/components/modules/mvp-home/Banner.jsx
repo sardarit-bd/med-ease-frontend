@@ -27,7 +27,7 @@ export default function Banner() {
 
 
                     {/* Button */}
-                    <div className="flex flex-col md:flex-row justify-center my-8 gap-3 text-center">
+                    <div className="">
                         <Button>Maps de santé</Button>
                         <Button>Portail Info Établissements</Button>
                         <Button>Portail Info Professionnels</Button>
