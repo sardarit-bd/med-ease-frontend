@@ -13,7 +13,7 @@ import ProspectsClientsCard from "@/components/modules/dashboard/cards/Prospects
 export default function page() {
     return (
         <main className="flex-1 overflow-auto bg-slate-50">
-            <div className="w-full h-full px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-3 sm:py-4 md:py-6">
+            <div className="w-full h-full">
                 {/* Mobile: 1 column | Tablet (640px): 2 columns | Laptop (1024px): 3 columns | Desktop (1280px): 4 columns */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-5 lg:gap-6 auto-rows-max">
                     {/* Column 1 - Left */}
