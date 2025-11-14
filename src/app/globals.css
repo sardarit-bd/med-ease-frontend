@@ -65,6 +65,26 @@ h3 {
     scrollbar-width: none;
     /* Firefox */
   }
+
+
+  .nosduengagementsBg {
+    background: linear-gradient(#2a6ebbeb, #61d0bff0), url('../../public/images/nosduebg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+
+  .arrowClipPath {
+    height: 10px;
+    width: 10px;
+    background: black;
+    transform: translateX(-50%) !important;
+    /* clip-path: polygon(100% 0, 0 0, 50% 100%); */
+    clip-path: polygon(50% 20%, 100% 0, 50% 100%, 0 0);
+  }
+
+
 }
 
 
