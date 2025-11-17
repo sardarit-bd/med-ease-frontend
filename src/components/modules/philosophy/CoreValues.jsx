@@ -50,7 +50,6 @@ export default function CoreValues() {
                 </span>
             </h2>
             <div>
-
                 {philosophySteps.map((step, index) => (
                     <StepCard
                         key={step.id}
@@ -58,7 +57,7 @@ export default function CoreValues() {
                         titleFirstLine={step.titleFirstLine}
                         titleSecondLine={step.titleSecondLine}
                         content={step.content}
-                        bgColor={bgColors[index % 2]} // alternate background
+                        bgColor={bgColors[index % 2]}
                     />
                 ))}
             </div>
