@@ -232,7 +232,7 @@ export default function Demain() {
                         className="absolute top-8 right-12 animate-float-slow hidden md:block"
                     />
                     <Image
-                        src="/images/First Aid 1.png"
+                        src="/images/FirstAid1.png"
                         alt="First Aid Box"
                         width={70}
                         height={70}
