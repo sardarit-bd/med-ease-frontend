@@ -25,7 +25,7 @@ export default function TopTabsWithSubTabs() {
         <div className="w-full border-b-2 border-gray-200 pb-4 px-6 bg-white">
 
             {/* MAIN TABS */}
-            <div className="flex items-center gap-8 text-gray-700 font-medium text-sm overflow-x-auto whitespace-nowrap py-3 border-b-2 border-gray-200 pb-6">
+            <div className="flex items-center gap-8 text-gray-700 font-medium text-sm overflow-x-auto whitespace-nowrap py-3 border-b-2 border-gray-200 pb-6 scrollbar-hide">
                 {mainTabs.map((tab) => (
                     <button
                         key={tab}
