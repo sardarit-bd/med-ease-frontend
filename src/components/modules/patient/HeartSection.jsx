@@ -15,7 +15,7 @@ export default function HeartSection() {
                 </h2>
 
                 {/* Main content grid */}
-                <div className="relative mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center">
+                <div className="relative mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     {/* Left column */}
                     <div className="flex flex-col gap-8 md:col-span-1 z-10">
                         <div className="bg-white customboxshadow p-6 text-left">
@@ -24,7 +24,7 @@ export default function HeartSection() {
                                 alt="hospital"
                                 width={45}
                                 height={45}
-                                className="mr-2"
+                                className="mr-2 mb-2"
                             />
                             <div className="flex items-center mb-3">
                                 <h3 className="font-semibold text-gray-900">
@@ -42,7 +42,7 @@ export default function HeartSection() {
                                 alt="hospital"
                                 width={45}
                                 height={45}
-                                className="mr-2"
+                                className="mr-2 mb-2"
                             />
                             <div className="flex items-center mb-3">
                                 <h3 className="font-semibold text-gray-900">
@@ -77,7 +77,7 @@ export default function HeartSection() {
                                 alt="information"
                                 width={45}
                                 height={45}
-                                className="mr-2"
+                                className="mr-2 mb-2"
                             />
                             <div className="flex items-center mb-3">
                                 <h3 className="font-semibold text-gray-900">
@@ -95,7 +95,7 @@ export default function HeartSection() {
                                 alt="stethoscope"
                                 width={45}
                                 height={45}
-                                className="mr-2"
+                                className="mr-2 mb-2"
                             />
                             <div className="flex items-center mb-3">
                                 <h3 className="font-semibold text-gray-900">

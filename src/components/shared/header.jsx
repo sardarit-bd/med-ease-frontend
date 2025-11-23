@@ -110,7 +110,7 @@ export default function Header() {
             Votre santé
           </Link>
 
-          <button className="px-5 py-2 mt-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-full cursor-pointer">
+          <button onClick={() => console.log("Clicked")} type="button" className="px-5 py-2 mt-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-full cursor-pointer">
             J'agis
           </button>
         </div>

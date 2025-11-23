@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function SupportTeamSection() {
     return (
         <section className="w-full bg-[#F6FBFA] relative overflow-hidden">
-            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start justify-between px-6 md:px-10 gap-12 h-full pt-20">
+            <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start justify-between px-6 md:px-10 gap-12 h-full pt-16 md:pt-20 pb-10 md:pb-0">
                 {/* Left Image Section */}
                 <div className="relative flex justify-center lg:w-1/2">
                     <div className="relative z-10">

@@ -1,18 +1,25 @@
+"use client";
+import Banner from "@/components/modules/home/Banner";
+import BeneficesRapidesSection from "@/components/modules/home/BeneficesRapidesSection";
+import ConciergerieSection from "@/components/modules/home/ConciergerieSection";
+import ContactFormSection from "@/components/modules/home/ContactFormSection";
+import DirectCallBanner from "@/components/modules/home/DirectCallBanner";
+import EtapesSimplesSection from "@/components/modules/home/EtapesSimplesSection";
 import Footer from "@/components/modules/home/Footer";
-import HealthCTASection from "@/components/modules/patient/HealthCTASection";
-import HeartSection from "@/components/modules/patient/HeartSection";
-import HeroSectionPatient from "@/components/modules/patient/HeroSectionPatient";
-import SupportTeamSection from "@/components/modules/patient/SupportTeamSection";
+import ServicesPersonnalisesSection from "@/components/modules/home/ServicesPersonnalisesSection";
 
 const { Divide } = require("lucide-react")
 
 const Page = () => {
     return (
         <div>
-            <HeroSectionPatient />
-            <HeartSection />
-            <HealthCTASection />
-            <SupportTeamSection />
+            <Banner />
+            <ConciergerieSection />
+            <BeneficesRapidesSection />
+            <ServicesPersonnalisesSection />
+            <EtapesSimplesSection />
+            <ContactFormSection />
+            <DirectCallBanner />
             <Footer />
         </div>
     )
