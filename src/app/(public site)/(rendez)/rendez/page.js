@@ -3,7 +3,7 @@ import ConciergeriePage from "@/components/modules/rendez/ConciergeriePage";
 import RdvGradientBar from "@/components/modules/rendez/RdvGradientBar";
 
 const { default: TopHeader } = require("@/components/modules/rendez/TopHeader")
-const { default: Header } = require("@/components/shared/header")
+const { default: Header } = require("@/components/shared/Header")
 
 const Rendez = () => {
     return (

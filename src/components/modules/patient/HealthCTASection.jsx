@@ -9,11 +9,7 @@ export default function HealthCTASection() {
             <div className="max-w-7xl mx-auto text-center px-6 md:px-10">
                 {/* Top Caption */}
                 <h3 className="text-sm md:text-base font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF] uppercase tracking-wide flex items-center justify-center gap-2">
-                    <span className="text-red-500 text-lg">❤️</span>
-                    Parce que chaque minute compte,
-                    <span className="text-[var(--brandBg,#61D0BF)]">
-                        chaque décision peut sauver une vie.
-                    </span>
+                    <span className="text-red-500 text-lg text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF]"><span className="text-red-700">❤️</span> Parce que chaque minute compte, chaque décision peut sauver une vie.</span>
                 </h3>
 
                 {/* CTA Box */}
@@ -24,28 +20,28 @@ export default function HealthCTASection() {
                         alt="stethoscope"
                         width={60}
                         height={60}
-                        className="absolute top-8 right-10 opacity-90 animate-float"
+                        className="hidden lg:block absolute top-8 right-10 opacity-90 animate-float"
                     />
                     <Image
                         src="/icons/pills.png"
                         alt="pill"
                         width={55}
                         height={55}
-                        className="absolute bottom-10 right-28 opacity-90 animate-float-delayed"
+                        className="hidden lg:block absolute bottom-10 right-28 opacity-90 animate-float-delayed"
                     />
                     <Image
                         src="/icons/FirstAid.png"
                         alt="medical box"
                         width={70}
                         height={70}
-                        className="absolute bottom-10 left-28 opacity-90 animate-float"
+                        className="hidden lg:block absolute bottom-10 left-28 opacity-90 animate-float"
                     />
                     <Image
                         src="/icons/BloodPressure.png"
                         alt="health monitor"
                         width={55}
                         height={55}
-                        className="absolute top-8 left-20 opacity-90 animate-float-delayed"
+                        className="hidden lg:block absolute top-8 left-20 opacity-90 animate-float-delayed"
                     />
 
                     {/* CTA Text */}

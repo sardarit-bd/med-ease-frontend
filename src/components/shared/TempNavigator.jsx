@@ -138,6 +138,41 @@ const TempNavigator = () => {
             link: '/dashboard/urgences/urgences4'
         },
 
+        {
+            name: "Medical Dashboard",
+            link: '/dashboard/medical'
+        },
+
+        {
+            name: "Medical Dashboard Slot Request",
+            link: '/dashboard/medical/slot-request'
+        },
+
+        {
+            name: "Medical Dashboard BedAvailabilitySearch",
+            link: '/dashboard/medical/bedavailabilitysearch'
+        },
+
+        {
+            name: "Medical Dashboard BedManagement Dashboard Table",
+            link: '/dashboard/medical/bedmanagementdashboardtable'
+        },
+
+        {
+            name: "Medical Dashboard Hospital Profile",
+            link: '/dashboard/medical/hospitalprofile'
+        },
+
+        {
+            name: "Medical Dashboard Tableau de bord Professionnel",
+            link: '/dashboard/medical/professionaldashboard'
+        },
+
+        {
+            name: "Medical Dashboard Demandes de transport disponibles",
+            link: '/dashboard/medical/medicaltransportrequests'
+        },
+
     ]
 
 
