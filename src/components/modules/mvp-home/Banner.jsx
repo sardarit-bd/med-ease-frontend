@@ -3,7 +3,7 @@ import { MapPin, Search, Stethoscope, X } from "lucide-react";
 
 export default function Banner() {
     return (
-        <section className="px-4 md:px-8 py-20 pt-24 flex items-center justify-center min-h-[500px] bg-[#eef6f8] relative">
+        <section className="bg-[#eef6f7] px-4 md:px-8 py-25 pt-36 flex items-center justify-center min-h-[500px] bg-[#FEFEFEE8]">
             <div className="grid grid-cols-1 md:grid-cols-1 text-center items-center gap-10 max-w-7xl mx-auto ">
                 {/* --- Left Content --- */}
                 <div>
