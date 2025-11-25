@@ -180,6 +180,18 @@ const TempNavigator = () => {
             name: "Offre de soins",
             link: '/dashboard/medical/offredesoins'
         },
+        {
+            name: "Filtres & Résultats",
+            link: '/dashboard/medical/filtresresultats'
+        },
+        {
+            name: "Bloc opératoire",
+            link: '/dashboard/medical/blocoperatoire'
+        },
+        {
+            name: "Transport sanitaire - Gestion centralisée",
+            link: '/dashboard/medical/gestioncentralisee'
+        },
 
     ]
 
