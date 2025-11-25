@@ -88,6 +88,10 @@ const TempNavigator = () => {
             link: '/chronologie'
         },
         {
+            name: "Patient Dashboard",
+            link: '/patient-dashboard/tableau'
+        },
+        {
             name: "Dashboard Admin",
             link: '/dashboard/admin'
         },
