@@ -172,6 +172,14 @@ const TempNavigator = () => {
             name: "Medical Dashboard Demandes de transport disponibles",
             link: '/dashboard/medical/medicaltransportrequests'
         },
+        {
+            name: "Tableau de Board Transport - Fleet Manager",
+            link: '/dashboard/medical/fleetmanager'
+        },
+        {
+            name: "Offre de soins",
+            link: '/dashboard/medical/offredesoins'
+        },
 
     ]
 
