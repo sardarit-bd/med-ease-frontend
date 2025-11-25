@@ -187,10 +187,6 @@ const TempNavigator = () => {
             <div onClick={() => { setIsShow(true) }} className="w-10 h-10 bg-white rounded-l-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-fit cursor-pointer flex items-center justify-center text-white shadow-xl">
                 <MdKeyboardArrowLeft className="text-4xl" />
             </div>
-
-
-
-
             {
                 isshow && <div className="w-screen h-screen z-50 fixed left-0 top-0 flex items-center justify-center">
 
@@ -199,7 +195,7 @@ const TempNavigator = () => {
                     </div>
                     <div className="bg-white h-screen w-[400px] p-4 overflow-y-scroll">
                         <h2 className="text-xl font-semibold text-gray-600">Teamporary Navigation:</h2>
-                        <span className="font-thin text-[13px] leading-3 text-gray-400">Don't worry, This is a Teamporary Navigation</span>
+                        <span className="font-thin text-[13px] leading-3 text-gray-400">{`Don't worry, This is a Teamporary Navigation`}</span>
 
                         <div className="mt-7">
 

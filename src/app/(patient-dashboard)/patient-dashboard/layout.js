@@ -4,7 +4,7 @@ import Navigation from "@/components/modules/pateint-dashboard/Navigation";
 export default function DashboardLayout({ children }) {
     return (
         <html lang="fr">
-            <body className="min-h-screen bg-[var(--bgLight)]">
+            <body className="min-h-screen bg-[#F4F7FB]">
 
                 {/* Dashboard Navigation */}
                 <Navigation />
@@ -14,7 +14,6 @@ export default function DashboardLayout({ children }) {
                 <main className="max-w-7xl mx-auto px-4 py-6">
                     {children}
                 </main>
-
             </body>
         </html>
     );
