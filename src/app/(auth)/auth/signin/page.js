@@ -1,21 +1,38 @@
 "use client";
 
 import SpinLoader from "@/components/shared/SpinLoader";
+import { useAuth } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 export default function LoginPage() {
 
+    const router = useRouter();
     const [isLoading, setisLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const { login, loading, error } = useAuth();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const form = e.target;
-        const email = form.email.value;
-        const password = form.password.value;
-        console.log({ email, password }); // Replace with real auth
+
+        const result = await login(formData);
+        if (result.success) {
+            router.replace('/patient-dashboard/tableau')
+        }
+    };
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
     };
 
     return (
@@ -38,6 +55,7 @@ export default function LoginPage() {
                             type="email"
                             id="email"
                             name="email"
+                            onChange={handleChange}
                             required
                             placeholder=" "
                             className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
@@ -54,6 +72,7 @@ export default function LoginPage() {
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
+                            onChange={handleChange}
                             id="password"
                             name="password"
                             required
