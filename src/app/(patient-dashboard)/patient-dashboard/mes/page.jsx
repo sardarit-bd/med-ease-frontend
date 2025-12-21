@@ -3,16 +3,72 @@
 import {
     Camera,
     Download,
+    Plus,
     PlusCircle,
     RefreshCw,
     Send,
-    User
+    User,
+    X
 } from "lucide-react";
+import { useState } from "react";
+import AddMedicine from "./AddMedicine";
+import RightColumn from "./RightColumn";
+import TopCounters from "./TopCounters";
 
 export default function OrdonnancesPage() {
+    const [showAddForm, setShowAddForm] = useState(false);
+    const [showMedicineModal, setShowMedicineModal] = useState(false);
+    const [activeMedicineIndex, setActiveMedicineIndex] = useState(null);
+    const [formData, setFormData] = useState({
+        doctorName: "",
+        doctorType: "",
+        doctorContact: "",
+        prescriptionDate: new Date().toISOString().split('T')[0],
+        validUntil: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0],
+        medications: []
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+
+
+
+    const openMedicineModal = () => {
+        setActiveMedicineIndex(null);
+        setShowMedicineModal(true);
+    };
+
+    const closeMedicineModal = () => {
+        setActiveMedicineIndex(null);
+        setShowMedicineModal(false);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Form submitted:", formData);
+
+        // Reset form and close
+        setFormData({
+            doctorName: "",
+            doctorType: "",
+            doctorContact: "",
+            prescriptionDate: new Date().toISOString().split('T')[0],
+            validUntil: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0],
+            medications: []
+        });
+        setShowAddForm(false);
+
+        alert("Ordonnance ajoutée avec succès!");
+    };
+
     return (
         <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
-
             {/* HEADER */}
             <div className="flex justify-between items-start mb-6">
                 <div>
@@ -26,8 +82,12 @@ export default function OrdonnancesPage() {
                     <button className="px-4 py-2 bg-white border text-sm rounded-xl shadow flex items-center gap-2">
                         <Camera size={16} /> Scanner
                     </button>
-                    <button className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl shadow text-sm flex items-center gap-2">
-                        <PlusCircle size={16} /> Ajouter
+                    <button
+                        onClick={() => setShowAddForm(!showAddForm)}
+                        className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl shadow text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
+                    >
+                        {showAddForm ? <X size={16} /> : <PlusCircle size={16} />}
+                        {showAddForm ? "Annuler" : "Ajouter"}
                     </button>
                 </div>
             </div>
@@ -46,33 +106,7 @@ export default function OrdonnancesPage() {
             </div>
 
             {/* TOP COUNTERS */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-
-                {/* Actives */}
-                <div className="bg-white p-4 rounded-xl shadow border text-center">
-                    <p className="text-sm font-medium text-blue-600">Actives</p>
-                    <h2 className="text-3xl font-bold text-blue-600 mt-2">3</h2>
-                </div>
-
-                {/* Médicaments */}
-                <div className="bg-white p-4 rounded-xl shadow border text-center">
-                    <p className="text-sm font-medium text-green-600">Médicaments</p>
-                    <h2 className="text-3xl font-bold text-green-600 mt-2">6</h2>
-                </div>
-
-                {/* À renouveler */}
-                <div className="bg-white p-4 rounded-xl shadow border text-center">
-                    <p className="text-sm font-medium text-orange-600">À renouveler</p>
-                    <h2 className="text-3xl font-bold text-orange-600 mt-2">1</h2>
-                </div>
-
-                {/* Prescripteurs */}
-                <div className="bg-white p-4 rounded-xl shadow border text-center">
-                    <p className="text-sm font-medium text-purple-600">Prescripteurs</p>
-                    <h2 className="text-3xl font-bold text-purple-600 mt-2">3</h2>
-                </div>
-
-            </div>
+            <TopCounters />
 
             {/* TABS */}
             <div className="flex gap-6 text-sm font-medium mb-6">
@@ -83,6 +117,122 @@ export default function OrdonnancesPage() {
                 <button className="text-gray-500">Renouvellements</button>
             </div>
 
+            {/* ACCORDION FORM */}
+            {showAddForm && (
+                <div className="bg-white rounded-xl shadow-lg p-6 mb-6 border border-[#6A5CFF]/20">
+                    <h2 className="text-xl font-bold text-[#0D1B2A] mb-6 flex items-center gap-2">
+                        <PlusCircle className="text-[#6A5CFF]" size={24} />
+                        Nouvelle Ordonnance
+                    </h2>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Doctor Information */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Nom du médecin *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="doctorName"
+                                    value={formData.doctorName}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Ex: Dr. John Smith"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Spécialité *
+                                </label>
+                                <input
+                                    type="text"
+                                    name="doctorType"
+                                    value={formData.doctorType}
+                                    onChange={handleInputChange}
+                                    required
+                                    placeholder="Ex: Cardiologist"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Contact
+                                </label>
+                                <input
+                                    type="tel"
+                                    name="doctorContact"
+                                    value={formData.doctorContact}
+                                    onChange={handleInputChange}
+                                    placeholder="Ex: +1234567890"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Dates */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Date de prescription *
+                                </label>
+                                <input
+                                    type="date"
+                                    name="prescriptionDate"
+                                    value={formData.prescriptionDate}
+                                    onChange={handleInputChange}
+                                    required
+                                    max={new Date().toISOString().split('T')[0]}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Valide jusqu'au *
+                                </label>
+                                <input
+                                    type="date"
+                                    name="validUntil"
+                                    value={formData.validUntil}
+                                    onChange={handleInputChange}
+                                    required
+                                    min={formData.prescriptionDate}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                />
+                            </div>
+                        </div>
+
+
+                        {/* Form Submit Buttons */}
+                        <div className="flex gap-3 pt-6 border-t">
+                            <button
+                                type="button"
+                                onClick={() => setShowAddForm(false)}
+                                className="px-6 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                            >
+                                Annuler l'ordonnance
+                            </button>
+                            <button
+                                type="submit"
+
+                                className={`flex-1 px-6 py-2 rounded-xl text-white transition-opacity bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] hover:opacity-90`}
+                            >
+                                Enregistrer l'ordonnance
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            )}
+
+            {/* MEDICINE FORM MODAL */}
+            {showMedicineModal && (
+                <AddMedicine activeMedicineIndex={activeMedicineIndex} closeMedicineModal={closeMedicineModal} />
+            )}
+
             {/* MAIN GRID */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -91,19 +241,29 @@ export default function OrdonnancesPage() {
 
                     {/* CARD 1 — DR MARTIN */}
                     <div className="bg-white rounded-xl shadow p-6 border">
-                        <div className="flex items-center gap-3 mb-2">
-                            <User size={22} className="text-blue-600" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800">Dr. Martin</h3>
-                                <p className="text-xs text-gray-500">Médecin généraliste</p>
+                        <div className="flex justify-between items-center mb-3">
+                            <div className="flex items-center gap-3 mb-2">
+                                <User size={22} className="text-blue-600" />
+                                <div>
+                                    <h3 className="font-semibold text-gray-800">Dr. Martin</h3>
+                                    <p className="text-xs text-gray-500">Médecin généraliste</p>
+                                </div>
                             </div>
+                            <button
+                                type="button"
+                                onClick={() => openMedicineModal()}
+                                className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
+                            >
+                                <Plus size={16} />
+                                Ajouter un médicament
+                            </button>
                         </div>
 
                         <p className="text-xs text-gray-500">
                             Date de prescription: <strong>15/10/2025</strong>
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu’au:{" "}
+                            Valide jusqu'au:{" "}
                             <strong className="text-red-500">15/11/2025 (14 jours)</strong>
                         </p>
 
@@ -112,7 +272,7 @@ export default function OrdonnancesPage() {
                         </p>
 
                         <div className="mt-1 text-xs text-gray-600">
-                            Doliprane 1000mg • Helicidine sirop
+                            Delipane 1000mg • Helicidine sirop
                         </div>
 
                         {/* Progress */}
@@ -150,7 +310,7 @@ export default function OrdonnancesPage() {
                             Date de prescription: <strong>20/09/2025</strong>
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu’au:{" "}
+                            Valide jusqu'au:{" "}
                             <strong className="text-blue-600">28/11/2025 (27 jours)</strong>
                         </p>
 
@@ -197,7 +357,7 @@ export default function OrdonnancesPage() {
                         </p>
 
                         <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu’au:{" "}
+                            Valide jusqu'au:{" "}
                             <strong className="text-red-600">
                                 10/11/2025 (9 jours)
                             </strong>
@@ -239,55 +399,7 @@ export default function OrdonnancesPage() {
                 </div>
 
                 {/* ------------------ RIGHT COLUMN ------------------ */}
-                <div className="space-y-6">
-
-                    {/* SCAN INTELLIGENT */}
-                    <div className="bg-white rounded-xl shadow p-6 border bg-gradient-to-br from-[#F3F4FF] to-[#E8FBFF]">
-                        <h3 className="font-semibold text-gray-800 flex items-center gap-2 mb-2">
-                            <Camera size={18} className="text-[#6A5CFF]" /> Scan Intelligent
-                        </h3>
-                        <p className="text-xs text-gray-600">OCR • Datamatrix</p>
-                        <p className="text-xs text-gray-500 mt-3">
-                            Scannez vos ordonnances pour une extraction automatique
-                            des médicaments et ajout au pilulier.
-                        </p>
-
-                        <button className="w-full mt-4 py-2 px-4 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl shadow text-sm">
-                            Scanner une ordonnance
-                        </button>
-                    </div>
-
-                    {/* PARTNER PHARMACIES */}
-                    <div className="bg-white rounded-xl shadow p-6 border">
-                        <h3 className="font-semibold text-gray-800 mb-3">
-                            Pharmacies partenaires
-                        </h3>
-
-                        <p className="flex items-center gap-2 text-sm mb-2">
-                            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                            Pharmacie du Centre — <span className="text-gray-600">0.3 km</span> — <span className="text-green-600">Ouverte</span>
-                        </p>
-
-                        <p className="flex items-center gap-2 text-sm mb-4">
-                            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                            Pharmacie Saint-Michel — <span className="text-gray-600">0.8 km</span> — <span className="text-green-600">Ouverte</span>
-                        </p>
-
-                        <button className="w-full py-2 px-4 bg-white border rounded-xl shadow text-sm flex items-center justify-center gap-2">
-                            <Send size={16} /> Envoyer ordonnance
-                        </button>
-                    </div>
-
-                    {/* ADVICE */}
-                    <div className="bg-[#E6F7ED] border border-[#C7EED4] rounded-xl shadow p-6">
-                        <h3 className="font-semibold text-gray-800 mb-1">Conseil</h3>
-                        <p className="text-sm text-gray-600">
-                            Anticipez vos renouvellements 5 jours avant expiration pour éviter
-                            toute rupture de traitement.
-                        </p>
-                    </div>
-
-                </div>
+                <RightColumn />
             </div>
         </div>
     );
