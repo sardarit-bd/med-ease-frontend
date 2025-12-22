@@ -1,12 +1,17 @@
 "use client";
 
+import { useAuth } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
+    const { register } = useAuth()
+    const router = useRouter();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -15,7 +20,15 @@ export default function RegisterPage() {
         const email = form.email.value;
         const password = form.password.value;
         const confirm = form.confirm.value;
-        console.log({ name, email, password, confirm }); // Replace with API call
+
+        const res = await register({ name, email, password, confirm })
+        if (res.success) {
+            router.replace('/login')
+            toast.success('Account created successfully! Please log in.');
+        } else {
+            toast.error(res.message || 'Registration failed. Please try again.');
+            console.log(res.error);
+        }
     };
 
     return (
