@@ -68,7 +68,10 @@ export function usePrescriptions() {
 
         try {
             const response = await api.createPrescription(prescriptionData);
+            console.log('API Response:', response);
             const newPrescription = response.data || response;
+
+            console.log('Created Prescription:', newPrescription);
 
             setState(prev => ({
                 ...prev,

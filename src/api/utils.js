@@ -1,7 +1,7 @@
 // src/api/utils.js
 
 // Base API URL
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
 // Generic API request function
 export async function apiRequest(endpoint, method = 'GET', data = null, options = {}) {

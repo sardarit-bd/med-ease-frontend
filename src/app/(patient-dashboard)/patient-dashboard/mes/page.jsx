@@ -1,5 +1,6 @@
 "use client";
 
+import { usePrescriptions } from "@/hooks";
 import {
     Camera,
     Download,
@@ -10,22 +11,34 @@ import {
     User,
     X
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import AddMedicine from "./AddMedicine";
 import RightColumn from "./RightColumn";
 import TopCounters from "./TopCounters";
 
 export default function OrdonnancesPage() {
     const [showAddForm, setShowAddForm] = useState(false);
+    const [prescriptions, setPrescriptions] = useState([]);
     const [showMedicineModal, setShowMedicineModal] = useState(false);
-    const [activeMedicineIndex, setActiveMedicineIndex] = useState(null);
+    const [activeMedicineId, setActiveMedicineId] = useState(null);
+
+    const { createPrescription, fetchPrescriptions, loading } = usePrescriptions()
+
+    useEffect(() => {
+        async function loadPrescriptions() {
+            const result = await fetchPrescriptions();
+            setPrescriptions(result);
+        }
+        loadPrescriptions();
+    }, [fetchPrescriptions]);
+
     const [formData, setFormData] = useState({
         doctorName: "",
         doctorType: "",
         doctorContact: "",
         prescriptionDate: new Date().toISOString().split('T')[0],
         validUntil: new Date(new Date().setMonth(new Date().getMonth() + 3)).toISOString().split('T')[0],
-        medications: []
     });
 
     const handleInputChange = (e) => {
@@ -36,22 +49,18 @@ export default function OrdonnancesPage() {
         }));
     };
 
-
-
-
-    const openMedicineModal = () => {
-        setActiveMedicineIndex(null);
+    const openMedicineModal = (prescriptionId) => {
+        setActiveMedicineId(prescriptionId);
         setShowMedicineModal(true);
     };
 
     const closeMedicineModal = () => {
-        setActiveMedicineIndex(null);
+        setActiveMedicineId(null);
         setShowMedicineModal(false);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted:", formData);
 
         // Reset form and close
         setFormData({
@@ -64,9 +73,18 @@ export default function OrdonnancesPage() {
         });
         setShowAddForm(false);
 
-        alert("Ordonnance ajoutée avec succès!");
-    };
+        const result = await createPrescription(formData);
 
+        if (result.data?.success) {
+            toast.success("Ordonnance créée avec succès");
+            // Refresh prescriptions list
+            const updatedPrescriptions = await fetchPrescriptions();
+            setPrescriptions(updatedPrescriptions);
+        } else {
+            toast.error("Échec de la création de l'ordonnance");
+            console.error("Create Prescription Error:", result);
+        }
+    }
     return (
         <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
             {/* HEADER */}
@@ -230,7 +248,7 @@ export default function OrdonnancesPage() {
 
             {/* MEDICINE FORM MODAL */}
             {showMedicineModal && (
-                <AddMedicine activeMedicineIndex={activeMedicineIndex} closeMedicineModal={closeMedicineModal} />
+                <AddMedicine prescriptionId={activeMedicineId} closeMedicineModal={closeMedicineModal} />
             )}
 
             {/* MAIN GRID */}
@@ -238,6 +256,82 @@ export default function OrdonnancesPage() {
 
                 {/* LEFT COLUMN */}
                 <div className="lg:col-span-2 space-y-6">
+                    {prescriptions.length <= 0 ? <h2>Loading</h2> : prescriptions.map((prescription, index) => (
+                        <div className="bg-white rounded-xl shadow p-6 border" >
+                            <div className="flex justify-between items-center mb-3">
+                                <div className="flex items-center gap-3 mb-2">
+                                    <User size={22} className="text-blue-600" />
+                                    <div>
+                                        <h3 className="font-semibold text-gray-800">{prescription.doctorName}</h3>
+                                        <p className="text-xs text-gray-500">{prescription.doctorType}</p>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => openMedicineModal(prescription._id)}
+                                    className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
+                                >
+                                    <Plus size={16} />
+                                    Ajouter un médicament
+                                </button>
+                            </div>
+
+                            <p className="text-xs text-gray-500">
+                                Date de prescription:{" "}
+                                <strong>{new Date(prescription.prescriptionDate).toLocaleDateString('en-GB')}</strong>
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1">
+                                Valide jusqu'au:{" "}
+                                <strong className="text-red-500">
+                                    {new Date(prescription.validUntil).toLocaleDateString('en-GB')} (
+                                    {Math.ceil(
+                                        (new Date(prescription.validUntil) - new Date(prescription.prescriptionDate)) /
+                                        (1000 * 60 * 60 * 24)
+                                    )}{" "}
+                                    jours)
+                                </strong>
+                            </p>
+
+
+                            {prescription.medicines && prescription.medicines.length > 0 && (
+                                <>
+                                    <p className="text-xs text-gray-700 mt-3 font-medium">
+                                        Médicaments prescrits:
+                                    </p>
+                                    {prescription.medicines.map((med, medIndex) => (
+
+                                        <>
+
+                                            <div className="mt-1 text-xs text-gray-600">
+                                                {med.name} • {med.strength} • {med.form}
+                                            </div>
+
+
+                                            <div className="mt-4">
+                                                <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                                    {Math.ceil((med?.takenDays / med?.totalDays) * 100) > 0 && (<div className={`h-full  bg-green-600 w-[${Math.ceil((med?.takenDays / med?.totalDays) * 100)}%]`}></div>)}
+
+                                                </div>
+                                                <p className="text-xs text-gray-500 mt-1 text-right">
+                                                    {med?.takenDays}/{med?.totalDays} jours
+                                                </p>
+                                            </div>
+                                        </>
+                                    ))}
+                                </>)}
+
+                            {/* Buttons */}
+                            <div className="flex gap-3 mt-4">
+                                <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
+                                    <Download size={16} /> Télécharger
+                                </button>
+                                <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
+                                    <Send size={16} /> Envoyer
+                                </button>
+                            </div>
+                        </div>
+
+                    ))}
 
                     {/* CARD 1 — DR MARTIN */}
                     <div className="bg-white rounded-xl shadow p-6 border">
@@ -400,7 +494,7 @@ export default function OrdonnancesPage() {
 
                 {/* ------------------ RIGHT COLUMN ------------------ */}
                 <RightColumn />
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

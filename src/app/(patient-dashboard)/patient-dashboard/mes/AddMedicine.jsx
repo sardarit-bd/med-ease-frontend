@@ -1,9 +1,12 @@
 'use client';
 
+import { usePrescriptions } from "@/hooks";
 import { Clock, Pill, Plus, X } from "lucide-react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
-export default function AddMedicine({ activeMedicineIndex, closeMedicineModal }) {
+export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, prescriptionId }) {
+    const { addMedicine: saveMedicine } = usePrescriptions()
     const [medicineFormData, setMedicineFormData] = useState({
         name: "",
         genericName: "",
@@ -21,7 +24,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal })
         status: "active",
         hasStock: true,
         startDate: new Date().toISOString().split('T')[0],
-        endDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0]
+        totalDays: ''
     });
 
     const daysOfWeekOptions = [
@@ -160,17 +163,22 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal })
         setShowMedicineModal(true);
     };
 
-    const addMedicine = () => {
+    const addMedicine = async () => {
         if (!medicineFormData.name || !medicineFormData.strength) {
             alert("Veuillez remplir au moins le nom et la force du médicament");
             return;
         }
 
-        setFormData(prev => ({
-            ...prev,
-            medications: [...prev.medications, { ...medicineFormData }]
-        }));
+        const newMedicine = { ...medicineFormData, prescriptionId: prescriptionId };
+        const result = await saveMedicine(prescriptionId, newMedicine);
 
+        if (result?.success) {
+            toast.success("Médicament ajouté avec succès");
+        } else {
+            toast.error("Échec de l'ajout du médicament");
+            console.error("Add Medicine Error:", result);
+            return;
+        }
         closeMedicineModal();
     };
 
@@ -201,7 +209,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal })
                     <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold text-[#0D1B2A] flex items-center gap-2">
                             <Pill className="text-[#6A5CFF]" size={24} />
-                            {activeMedicineIndex !== null ? "Modifier le médicament" : "Ajouter un nouveau médicament"}
+                            {activeMedicineIndex ? "Modifier le médicament" : "Ajouter un nouveau médicament"}
                         </h2>
                         <button
                             onClick={closeMedicineModal}
@@ -438,14 +446,13 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal })
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Date de fin
+                                Total Days
                             </label>
                             <input
-                                type="date"
-                                name="endDate"
-                                value={medicineFormData.endDate}
+                                type="number"
+                                name="totalDays"
+                                value={medicineFormData.totalDays}
                                 onChange={handleMedicineInputChange}
-                                min={medicineFormData.startDate}
                                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
                             />
                         </div>
@@ -460,7 +467,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal })
                         >
                             Annuler
                         </button>
-                        {activeMedicineIndex !== null ? (
+                        {activeMedicineIndex ? (
                             <button
                                 type="button"
                                 onClick={updateMedicine}

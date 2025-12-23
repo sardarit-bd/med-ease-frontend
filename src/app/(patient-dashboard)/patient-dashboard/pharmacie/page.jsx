@@ -1,5 +1,6 @@
 "use client";
 
+import { useStock } from "@/hooks";
 import {
     AlertCircle,
     Camera,
@@ -10,8 +11,52 @@ import {
     PlusCircle,
     Search
 } from "lucide-react";
+import { useEffect, useState } from "react";
+import RightSidebar from "./RightSidebar";
 
 export default function PharmaciePage() {
+    const [showForm, setShowForm] = useState(false);
+    const { addStock, fetchStock, fetchDropdownMedicines } = useStock()
+    const [dropdownMedicines, setDropdownMedicines] = useState([]);
+
+    const [formData, setFormData] = useState({
+        medicineId: "",
+        quantity: "",
+        unit: "tablets",
+        purchasedFrom: "",
+        expiryDate: "",
+        price: ""
+    });
+
+    // This will later come from API
+    const medicines = [
+        { _id: "694a407327c9093af561423b", name: "Doliprane 1000mg" },
+        { _id: "694a407327c9093af561423c", name: "Helicidine" },
+        { _id: "694a407327c9093af561423d", name: "Levothyrox 75µg" }
+    ];
+
+    useEffect(() => {
+        async function loadDropdownMedicines() {
+            const dropDown = await fetchDropdownMedicines();
+            setDropdownMedicines(dropDown);
+        }
+        loadDropdownMedicines();
+    }, []);
+
+    const handleSubmit = () => {
+
+        const payload = {
+            ...formData,
+            quantity: Number(formData.quantity),
+            price: Number(formData.price),
+            expiryDate: new Date(formData.expiryDate).toISOString()
+        };
+
+        console.log("SEND TO API 👉", payload);
+        setShowForm(false);
+    }
+
+    console.log("Dropdown Medicines 👉", dropdownMedicines);
     return (
         <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
 
@@ -29,11 +74,99 @@ export default function PharmaciePage() {
                         <Camera size={16} /> Scanner
                     </button>
 
-                    <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white shadow text-sm flex items-center gap-1">
-                        <PlusCircle size={16} /> Ajouter
+                    <button
+                        onClick={() => setShowForm(!showForm)}
+                        className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white shadow text-sm flex items-center gap-1"
+                    >
+                        <PlusCircle size={16} />
+                        Ajouter
                     </button>
+
                 </div>
             </div>
+
+            {showForm && (
+                <div className="bg-white border rounded-xl shadow p-4 mb-6 max-w-xl">
+                    <h3 className="text-sm font-semibold mb-3 text-gray-700">
+                        Ajouter un stock
+                    </h3>
+
+                    <div className="space-y-3 text-sm">
+                        {/* Medicine dropdown */}
+                        <select
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.medicineId}
+                            onChange={(e) =>
+                                setFormData({ ...formData, medicineId: e.target.value })
+                            }
+                        >
+                            <option value="">Sélectionner un médicament</option>
+                            {medicines.map((med) => (
+                                <option key={med._id} value={med._id}>
+                                    {med.name}
+                                </option>
+                            ))}
+                        </select>
+
+                        <input
+                            type="number"
+                            placeholder="Quantité"
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.quantity}
+                            onChange={(e) =>
+                                setFormData({ ...formData, quantity: e.target.value })
+                            }
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Unité (ex: tablets)"
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.unit}
+                            onChange={(e) =>
+                                setFormData({ ...formData, unit: e.target.value })
+                            }
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Acheté depuis"
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.purchasedFrom}
+                            onChange={(e) =>
+                                setFormData({ ...formData, purchasedFrom: e.target.value })
+                            }
+                        />
+
+                        <input
+                            type="date"
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.expiryDate}
+                            onChange={(e) =>
+                                setFormData({ ...formData, expiryDate: e.target.value })
+                            }
+                        />
+
+                        <input
+                            type="number"
+                            placeholder="Prix"
+                            className="w-full border rounded-lg px-3 py-2"
+                            value={formData.price}
+                            onChange={(e) =>
+                                setFormData({ ...formData, price: e.target.value })
+                            }
+                        />
+
+                        <button
+                            className="w-full bg-[#6A5CFF] text-white py-2 rounded-xl text-sm shadow"
+                            onClick={handleSubmit}
+                        >
+                            Ajouter au stock
+                        </button>
+                    </div>
+                </div>
+            )}
+
 
             {/* TOP STATUS COUNTERS */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-6">
@@ -251,65 +384,7 @@ export default function PharmaciePage() {
                 </div>
 
                 {/* ------------------ RIGHT SIDEBAR ------------------ */}
-                <div className="space-y-6">
-
-                    {/* RECYCLAGE CARD */}
-                    <div className="bg-[#E6F7ED] border border-[#C2E8CF] rounded-xl p-5 shadow">
-                        <h3 className="font-semibold text-gray-700">Recyclage Cyclamed</h3>
-                        <p className="text-xs text-gray-600 mt-1">
-                            Ne jetez pas vos médicaments
-                        </p>
-                        <p className="text-xs text-gray-600 mt-3">
-                            Rapportez vos médicaments périmés ou non utilisés à votre
-                            pharmacie pour un recyclage responsable.
-                        </p>
-
-                        <button className="mt-4 w-full px-3 py-2 bg-white border rounded-xl text-xs shadow flex items-center justify-center gap-2">
-                            <MapPin size={14} /> Trouver un point de collecte
-                        </button>
-                    </div>
-
-                    {/* STOCK SUMMARY */}
-                    <div className="bg-white border rounded-xl shadow p-5">
-                        <h3 className="font-semibold text-gray-700">Résumé du stock</h3>
-                        <div className="mt-3 space-y-1 text-sm">
-                            <p className="flex justify-between">
-                                <span>Total médicaments</span> <strong>5</strong>
-                            </p>
-                            <p className="flex justify-between">
-                                <span>Stock OK</span>{" "}
-                                <strong className="text-green-600">2</strong>
-                            </p>
-                            <p className="flex justify-between">
-                                <span>Stock faible</span>{" "}
-                                <strong className="text-orange-500">1</strong>
-                            </p>
-                            <p className="flex justify-between">
-                                <span>Stock critique</span>{" "}
-                                <strong className="text-red-600">1</strong>
-                            </p>
-                            <p className="flex justify-between">
-                                <span>Périmés</span>{" "}
-                                <strong className="text-gray-600">1</strong>
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* DICTIONARY */}
-                    <div className="bg-white border rounded-xl shadow p-5">
-                        <h3 className="font-semibold text-gray-700">Dictionnaire</h3>
-                        <p className="text-xs text-gray-500">Rechercher un médicament</p>
-
-                        <input
-                            placeholder="Nom, DCI, pathologie..."
-                            className="w-full mt-3 px-3 py-2 border rounded-xl outline-none text-sm"
-                        />
-
-                        <button className="mt-3 w-full px-4 py-2 bg-[#6A5CFF] text-white text-sm rounded-xl shadow">
-                            Rechercher
-                        </button>
-                    </div>
-                </div>
+                <RightSidebar />
             </div>
         </div>
     );
