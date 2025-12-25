@@ -1,11 +1,12 @@
 "use client";
 
-import { useStock } from "@/hooks";
+import { useMedicines } from "@/hooks";
 import {
     AlertCircle,
     Camera,
     Filter,
     MapPin,
+    MinusCircle,
     MoreVertical,
     Pill,
     PlusCircle,
@@ -13,50 +14,20 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import RightSidebar from "./RightSidebar";
+import StockForm from "./StockForm";
 
 export default function PharmaciePage() {
     const [showForm, setShowForm] = useState(false);
-    const { addStock, fetchStock, fetchDropdownMedicines } = useStock()
-    const [dropdownMedicines, setDropdownMedicines] = useState([]);
-
-    const [formData, setFormData] = useState({
-        medicineId: "",
-        quantity: "",
-        unit: "tablets",
-        purchasedFrom: "",
-        expiryDate: "",
-        price: ""
-    });
-
-    // This will later come from API
-    const medicines = [
-        { _id: "694a407327c9093af561423b", name: "Doliprane 1000mg" },
-        { _id: "694a407327c9093af561423c", name: "Helicidine" },
-        { _id: "694a407327c9093af561423d", name: "Levothyrox 75µg" }
-    ];
+    const [medicine, setMedicine] = useState(null);
+    const { fetchMedicines } = useMedicines()
 
     useEffect(() => {
-        async function loadDropdownMedicines() {
-            const dropDown = await fetchDropdownMedicines();
-            setDropdownMedicines(dropDown);
+        async function loadMedicines() {
+            const meds = await fetchMedicines();
+            setMedicine(meds || []);
         }
-        loadDropdownMedicines();
-    }, []);
-
-    const handleSubmit = () => {
-
-        const payload = {
-            ...formData,
-            quantity: Number(formData.quantity),
-            price: Number(formData.price),
-            expiryDate: new Date(formData.expiryDate).toISOString()
-        };
-
-        console.log("SEND TO API 👉", payload);
-        setShowForm(false);
-    }
-
-    console.log("Dropdown Medicines 👉", dropdownMedicines);
+        loadMedicines();
+    }, [fetchMedicines]);
     return (
         <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
 
@@ -78,93 +49,14 @@ export default function PharmaciePage() {
                         onClick={() => setShowForm(!showForm)}
                         className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white shadow text-sm flex items-center gap-1"
                     >
-                        <PlusCircle size={16} />
-                        Ajouter
+                        {showForm ? <MinusCircle size={16} /> : <PlusCircle size={16} />} Ajouter au stock
                     </button>
 
                 </div>
             </div>
 
             {showForm && (
-                <div className="bg-white border rounded-xl shadow p-4 mb-6 max-w-xl">
-                    <h3 className="text-sm font-semibold mb-3 text-gray-700">
-                        Ajouter un stock
-                    </h3>
-
-                    <div className="space-y-3 text-sm">
-                        {/* Medicine dropdown */}
-                        <select
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.medicineId}
-                            onChange={(e) =>
-                                setFormData({ ...formData, medicineId: e.target.value })
-                            }
-                        >
-                            <option value="">Sélectionner un médicament</option>
-                            {medicines.map((med) => (
-                                <option key={med._id} value={med._id}>
-                                    {med.name}
-                                </option>
-                            ))}
-                        </select>
-
-                        <input
-                            type="number"
-                            placeholder="Quantité"
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.quantity}
-                            onChange={(e) =>
-                                setFormData({ ...formData, quantity: e.target.value })
-                            }
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Unité (ex: tablets)"
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.unit}
-                            onChange={(e) =>
-                                setFormData({ ...formData, unit: e.target.value })
-                            }
-                        />
-
-                        <input
-                            type="text"
-                            placeholder="Acheté depuis"
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.purchasedFrom}
-                            onChange={(e) =>
-                                setFormData({ ...formData, purchasedFrom: e.target.value })
-                            }
-                        />
-
-                        <input
-                            type="date"
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.expiryDate}
-                            onChange={(e) =>
-                                setFormData({ ...formData, expiryDate: e.target.value })
-                            }
-                        />
-
-                        <input
-                            type="number"
-                            placeholder="Prix"
-                            className="w-full border rounded-lg px-3 py-2"
-                            value={formData.price}
-                            onChange={(e) =>
-                                setFormData({ ...formData, price: e.target.value })
-                            }
-                        />
-
-                        <button
-                            className="w-full bg-[#6A5CFF] text-white py-2 rounded-xl text-sm shadow"
-                            onClick={handleSubmit}
-                        >
-                            Ajouter au stock
-                        </button>
-                    </div>
-                </div>
+                <StockForm />
             )}
 
 
@@ -218,6 +110,37 @@ export default function PharmaciePage() {
                     {/* ------------------ MEDICATION CARDS ------------------ */}
 
                     {/* Doliprane OK */}
+                    {medicine && medicine.length > 0 && medicine.map((med) => (
+                        <>
+                            <div className="bg-[#E8F9EA] border border-[#C8EECF] rounded-xl p-5 shadow flex items-start justify-between">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <Pill size={18} className="text-green-600" />
+                                        <span className="text-sm font-semibold text-gray-700">
+                                            {med.name + " "}  {med.strength}
+                                        </span>
+                                        <span className={`text-xs bg-green-600 text-white px-2 py-0.5 rounded-full ${med.currentStock > 5 ? "bg-green-600" : "bg-orange-500"}`}>
+                                            {med.currentStock > 5 ? "Stock OK" : "Stock Low"}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-xs text-gray-500">{med.storage}</p>
+                                    <p className="text-xs text-gray-900 mt-2">
+                                        Quantité restante: <strong>{med.currentStock + " "} {med.form}</strong>
+                                    </p>
+                                    <p className="text-xs text-gray-500 mt-1">
+                                        Date de péremption: {med.expiryDate ? new Date(med.expiryDate).toLocaleDateString() : "N/A"}
+                                    </p>
+
+                                    <button className="mt-3 px-3 py-1 text-xs bg-white border rounded-xl shadow">
+                                        Détails
+                                    </button>
+                                </div>
+
+                                <MoreVertical size={18} className="text-gray-500" />
+                            </div>
+                        </>
+                    ))}
                     <div className="bg-[#E8F9EA] border border-[#C8EECF] rounded-xl p-5 shadow flex items-start justify-between">
                         <div>
                             <div className="flex items-center gap-2 mb-1">

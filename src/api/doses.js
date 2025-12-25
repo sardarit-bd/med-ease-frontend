@@ -21,7 +21,7 @@ export async function getDosesByPrescription(prescriptionId, date = null) {
 
 // Mark dose as taken
 export async function markDoseAsTaken(doseId, notes = '') {
-    return apiPost(`/doses/${doseId}/take`, { notes });
+    return apiPost(`/patient/doses/${doseId}/take`, { notes });
 }
 
 // Mark dose as missed
@@ -42,4 +42,9 @@ export async function getPrescriptionAdherenceStats(prescriptionId, days = 30) {
 // Get upcoming doses
 export async function getUpcomingDoses() {
     return apiGet('/doses/upcoming');
+}
+
+// get doeses by user id
+export async function getDosesByUser() {
+    return apiGet(`/patient/doses`);
 }

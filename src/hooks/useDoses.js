@@ -16,7 +16,8 @@ export function useDoses() {
         setState(prev => ({ ...prev, loading: true, error: null }));
 
         try {
-            const response = await api.getTodayDoses();
+            const response = await api.getDosesByUser();
+            console.log("Fetched today's doses:", response);
             const todayDoses = response.data || response;
 
             setState(prev => ({

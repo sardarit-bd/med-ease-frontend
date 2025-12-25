@@ -359,7 +359,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             </select>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mt-4 hidden">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Jours de la semaine
                             </label>
@@ -383,7 +383,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                         <div className="mt-4">
                             <div className="flex justify-between items-center mb-2">
                                 <label className="block text-sm font-medium text-gray-700">
-                                    Heures spécifiques
+                                    Heures spécifiques(Hour (0-23))
                                 </label>
                                 <button
                                     type="button"
@@ -393,14 +393,17 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                                     <Plus size={14} /> Ajouter une heure
                                 </button>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-2 flex gap-4">
                                 {medicineFormData.dosage.specificTimes.map((time, index) => (
                                     <div key={index} className="flex gap-2">
                                         <input
-                                            type="time"
-                                            value={time}
+                                            type="number"
+                                            min="0"
+                                            max="23"
+                                            value={time.split(':')[0] || ''}
                                             onChange={(e) => handleSpecificTimeChange(index, e.target.value)}
-                                            className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
+                                            className="w-20 px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent text-center"
+                                            placeholder="08"
                                         />
                                         <button
                                             type="button"
@@ -411,6 +414,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                                         </button>
                                     </div>
                                 ))}
+
                             </div>
                         </div>
 

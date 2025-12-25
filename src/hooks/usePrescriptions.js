@@ -16,6 +16,7 @@ export function usePrescriptions() {
 
         try {
             const response = await api.getAllPrescriptions();
+            console.log('API Response:', response);
             const prescriptions = response.data || response || [];
 
             setState(prev => ({
@@ -44,12 +45,6 @@ export function usePrescriptions() {
             const response = await api.getPrescriptionById(id);
             const prescription = response.data || response;
 
-            setState(prev => ({
-                ...prev,
-                selectedPrescription: prescription,
-                loading: false,
-            }));
-
             return prescription;
         } catch (error) {
             setState(prev => ({
@@ -72,12 +67,6 @@ export function usePrescriptions() {
             const newPrescription = response.data || response;
 
             console.log('Created Prescription:', newPrescription);
-
-            setState(prev => ({
-                ...prev,
-                prescriptions: [newPrescription, ...prev.prescriptions],
-                loading: false,
-            }));
 
             return { success: true, data: newPrescription };
         } catch (error) {
