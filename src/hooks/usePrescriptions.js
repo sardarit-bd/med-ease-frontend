@@ -128,16 +128,43 @@ export function usePrescriptions() {
         }
     }, []);
 
+    const fetchDashboardSummary = useCallback(async () => {
+        setState(prev => ({ ...prev, loading: true, error: null }));
+
+        try {
+            const response = await api.getDashboardSummary();
+            console.log('API Response:', response);
+            const prescriptions = response.data || response || [];
+
+            setState(prev => ({
+                ...prev,
+                prescriptions,
+                loading: false,
+            }));
+
+            return prescriptions;
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false,
+                error: error.message,
+            }));
+
+            return [];
+        }
+    }, []);
     // Clear error
     const clearError = useCallback(() => {
         setState(prev => ({ ...prev, error: null }));
     }, []);
+
 
     return {
         ...state,
         fetchPrescriptions,
         fetchPrescriptionById,
         createPrescription,
+        fetchDashboardSummary,
         addMedicine,
         getStats,
         clearError,

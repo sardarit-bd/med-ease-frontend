@@ -46,5 +46,6 @@ export async function getUpcomingDoses() {
 
 // get doeses by user id
 export async function getDosesByUser() {
-    return apiGet(`/patient/doses`);
+    const hour = new Date().getHours()
+    return apiGet(`/patient/doses?date=${hour}`);
 }
