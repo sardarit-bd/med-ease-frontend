@@ -3,9 +3,9 @@
 import SpinLoader from "@/components/shared/SpinLoader";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function ResetPasswordPage() {
+export function ResetPassword() {
     const searchParams = useSearchParams();
     const router = useRouter();
     const token = searchParams.get("token");
@@ -108,4 +108,10 @@ export default function ResetPasswordPage() {
             </div>
         </section>
     );
+}
+
+export default function ResetPasswordPage() {
+    return <Suspense>
+        <ResetPassword />
+    </Suspense>
 }
