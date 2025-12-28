@@ -42,3 +42,8 @@ export async function getPrescriptionStats(prescriptionId, params = {}) {
 export async function getExpiringPrescriptions() {
     return apiGet('/patient/prescriptions/expiring/soon');
 }
+
+
+export async function getDashboardSummary() {
+    return apiGet('/patient/dashboard/summary');
+}

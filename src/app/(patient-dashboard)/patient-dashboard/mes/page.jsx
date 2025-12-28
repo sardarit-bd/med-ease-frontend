@@ -75,7 +75,7 @@ export default function OrdonnancesPage() {
 
         const result = await createPrescription(formData);
 
-        if (result.data?.success) {
+        if (result?.success) {
             toast.success("Ordonnance créée avec succès");
             // Refresh prescriptions list
             const updatedPrescriptions = await fetchPrescriptions();
@@ -256,7 +256,8 @@ export default function OrdonnancesPage() {
 
                 {/* LEFT COLUMN */}
                 <div className="lg:col-span-2 space-y-6">
-                    {prescriptions.length <= 0 ? <h2>Loading</h2> : prescriptions.map((prescription, index) => (
+
+                    {prescriptions.length > 0 && prescriptions.map((prescription, index) => (
                         <div className="bg-white rounded-xl shadow p-6 border" >
                             <div className="flex justify-between items-center mb-3">
                                 <div className="flex items-center gap-3 mb-2">

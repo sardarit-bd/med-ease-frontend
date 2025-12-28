@@ -13,17 +13,27 @@ export default function RegisterPage() {
     const { register } = useAuth()
     const router = useRouter();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const form = e.target;
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
         const confirm = form.confirm.value;
+        const termsAccepted = form.terms.checked;
 
-        const res = await register({ name, email, password, confirm })
+        if (!termsAccepted) {
+            toast.error('You must agree to the Terms & Conditions to register.');
+            return;
+        }
+
+        if (password !== confirm) {
+            toast.error('Passwords do not match. Please try again.');
+            return;
+        }
+        const res = await register({ name, email, password });
         if (res.success) {
-            router.replace('/login')
+            router.replace('/auth/signin')
             toast.success('Account created successfully! Please log in.');
         } else {
             toast.error(res.message || 'Registration failed. Please try again.');
@@ -135,6 +145,7 @@ export default function RegisterPage() {
                     <div className="flex items-center text-sm text-gray-600">
                         <input
                             type="checkbox"
+                            name="terms"
                             id="terms"
                             required
                             className="accent-[var(--brandColor,#3074B5)] mr-2"

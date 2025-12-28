@@ -1,11 +1,78 @@
 "use client";
 
+import { useDoses } from "@/hooks";
 import {
     Camera,
     Clock
 } from "lucide-react";
-
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+export const todayFormatted = `Today, ${new Date().toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+})}`;
 export default function PilulierPage() {
+    const { fetchTodayDoses, markAsTaken } = useDoses();
+    const [todayDoses, setTodayDoses] = useState([]);
+
+    async function loadTodayDoses() {
+        const doses = await fetchTodayDoses();
+        console.log("Fetched today's doses:", doses);
+        setTodayDoses(doses);
+    }
+    useEffect(() => {
+        loadTodayDoses();
+    }, [fetchTodayDoses]);
+
+
+    const markMorningDoseAsTaken = async () => {
+        const morningDoses = todayDoses?.morning || [];
+        if (morningDoses.length === 0) return;
+        morningDoses.forEach(async (dose) => {
+            const result = await markAsTaken(dose._id);
+            if (result.success) {
+                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
+            } else {
+                toast.error(`${result.error}`);
+            }
+        });
+
+        loadTodayDoses();
+    }
+
+    const markNoonDoseAsTaken = async () => {
+        // Implement the logic to mark the noon dose as taken
+        const noonDoses = todayDoses?.noon || [];
+        if (noonDoses.length === 0) return;
+
+        noonDoses.forEach(async (dose) => {
+            const result = await markAsTaken(dose._id);
+            if (result.success) {
+                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
+            } else {
+                toast.error(`${result.error}`);
+            }
+        });
+
+        // loadTodayDoses();
+    }
+
+    const markEveningDoseAsTaken = async () => {
+        // Implement the logic to mark the evening dose as taken
+        const eveningDoses = todayDoses?.evening || [];
+        if (eveningDoses.length === 0) return;
+        eveningDoses.forEach(async (dose) => {
+            const result = await markAsTaken(dose._id);
+            if (result.success) {
+                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
+            } else {
+                toast.error(`${result.error}`);
+            }
+        });
+        loadTodayDoses();
+    }
+
     return (
         <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
 
@@ -45,7 +112,7 @@ export default function PilulierPage() {
 
                     {/* ACTIVE DAY CARD */}
                     <div className="bg-gradient-to-r from-[#6A5CFF] via-[#A65BFF] to-[#4DA2FF] text-white p-5 rounded-xl shadow">
-                        <p className="text-sm opacity-90">Aujourd’hui, 1er novembre 2025</p>
+                        <p className="text-sm opacity-90">{todayFormatted}</p>
                         <h2 className="text-xl font-semibold mt-1">
                             Traitements à prendre aujourd’hui
                         </h2>
@@ -59,7 +126,21 @@ export default function PilulierPage() {
                         </div>
 
                         {/* Doliprane */}
-                        <div className="p-4 rounded-xl border bg-[#EAF7FF] border-[#D4EDFF] flex justify-between items-center mb-3">
+                        {todayDoses?.noon && todayDoses.noon.map((dose) => (
+                            <>
+                                <div className="p-4 rounded-xl border bg-[#EAF7FF] border-[#D4EDFF] flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 className="font-semibold text-gray-700">{dose.medicine.name}</h4>
+                                        <p className="text-xs text-gray-500">{dose.medicine.dosage.amount + " " + dose.medicine.dosage.unit + " " + dose.medicine.strength}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-semibold text-blue-600">12:30</p>
+                                        <p className="text-xs text-blue-500">{dose.status}</p>
+                                    </div>
+                                </div>
+                            </>
+                        ))}
+                        {/* <div className="p-4 rounded-xl border bg-[#EAF7FF] border-[#D4EDFF] flex justify-between items-center mb-3">
                             <div>
                                 <h4 className="font-semibold text-gray-700">Doliprane</h4>
                                 <p className="text-xs text-gray-500">1 comprimé 1000mg</p>
@@ -68,11 +149,11 @@ export default function PilulierPage() {
                                 <p className="text-sm font-semibold text-blue-600">12:30</p>
                                 <p className="text-xs text-blue-500">À prendre</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Action Buttons */}
                         <div className="flex gap-2">
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
+                            <button onClick={markNoonDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
                                 Marquer comme pris
                             </button>
                             <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
@@ -88,8 +169,22 @@ export default function PilulierPage() {
                             <span className="font-semibold text-gray-700">Matin</span>
                         </div>
 
+                        {todayDoses?.morning && todayDoses.morning.map((dose) => (
+                            <>
+                                <div className="p-4 rounded-xl border bg-[#FFF7E6] border-[#FFE9B8] flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 className="font-semibold text-gray-700">{dose.medicine.name}</h4>
+                                        <p className="text-xs text-gray-500">{dose.medicine.dosage.amount + " " + dose.medicine.dosage.unit + " " + dose.medicine.strength}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-semibold text-yellow-600">09:00</p>
+                                        <p className="text-xs text-green-600">{dose.status}</p>
+                                    </div>
+                                </div>
+                            </>
+                        ))}
                         {/* Helicidine */}
-                        <div className="p-4 rounded-xl border bg-[#FFF7E6] border-[#FFE9B8] flex justify-between items-center mb-3">
+                        {/* <div className="p-4 rounded-xl border bg-[#FFF7E6] border-[#FFE9B8] flex justify-between items-center mb-3">
                             <div>
                                 <h4 className="font-semibold text-gray-700">Helicidine</h4>
                                 <p className="text-xs text-gray-500">1 cuillère(s) à soupe</p>
@@ -98,10 +193,10 @@ export default function PilulierPage() {
                                 <p className="text-sm font-semibold text-yellow-600">09:00</p>
                                 <p className="text-xs text-green-600">Pris</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         {/* Asturgil */}
-                        <div className="p-4 rounded-xl border bg-[#FFF7E6] border-[#FFE9B8] flex justify-between items-center">
+                        {/* <div className="p-4 rounded-xl border bg-[#FFF7E6] border-[#FFE9B8] flex justify-between items-center">
                             <div>
                                 <h4 className="font-semibold text-gray-700">Asturgil</h4>
                                 <p className="text-xs text-gray-500">2 pulvérisation(s)</p>
@@ -110,10 +205,10 @@ export default function PilulierPage() {
                                 <p className="text-sm font-semibold text-yellow-600">09:00</p>
                                 <p className="text-xs text-green-600">Pris</p>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className="flex gap-2 mt-4">
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
+                            <button onClick={markMorningDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
                                 Marquer comme pris
                             </button>
                             <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
@@ -129,6 +224,21 @@ export default function PilulierPage() {
                             <span className="font-semibold text-gray-700">Soir</span>
                         </div>
 
+
+                        {todayDoses?.evening && todayDoses.evening.map((dose) => (
+                            <>
+                                <div className="p-4 rounded-xl border bg-[#F5E8FF] border-[#E7D4FF] flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 className="font-semibold text-gray-700">{dose.medicine.name}</h4>
+                                        <p className="text-xs text-gray-500">{dose.medicine.dosage.amount + " " + dose.medicine.dosage.unit + " " + dose.medicine.strength}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-sm font-semibold text-purple-600">19:00</p>
+                                        <p className="text-xs text-gray-500">{dose.status}</p>
+                                    </div>
+                                </div>
+                            </>
+                        ))}
                         {/* Levothyrox */}
                         <div className="p-4 rounded-xl border bg-[#F5E8FF] border-[#E7D4FF] flex justify-between items-center mb-3">
                             <div>
@@ -142,7 +252,7 @@ export default function PilulierPage() {
                         </div>
 
                         <div className="flex gap-2 mt-4">
-                            <button className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
+                            <button onClick={markEveningDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
                                 Marquer comme pris
                             </button>
                             <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
@@ -164,7 +274,6 @@ export default function PilulierPage() {
                             <span className="text-green-600 font-medium">2 prises confirmées sur 4 prévues</span>
                         </div>
                     </div>
-
                 </div>
 
                 {/* ------------------ RIGHT SIDEBAR ------------------ */}

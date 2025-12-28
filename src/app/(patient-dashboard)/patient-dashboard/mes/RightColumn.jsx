@@ -1,3 +1,5 @@
+"use client";
+
 import { Camera, Send } from "lucide-react";
 
 export default function RightColumn() {

@@ -1,7 +1,7 @@
 'use client';
 
 import { usePrescriptions } from "@/hooks";
-import { Clock, Pill, Plus, X } from "lucide-react";
+import { Clock, Coffee, Moon, Pill, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -17,8 +17,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
             unit: "tablet",
             frequency: "once daily",
             timesPerDay: 1,
-            specificTimes: ["08:00"],
-            daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+            specificTimes: ["morning"],
             instructions: ""
         },
         status: "active",
@@ -27,15 +26,55 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
         totalDays: ''
     });
 
-    const daysOfWeekOptions = [
-        { value: 1, label: "Lundi" },
-        { value: 2, label: "Mardi" },
-        { value: 3, label: "Mercredi" },
-        { value: 4, label: "Jeudi" },
-        { value: 5, label: "Vendredi" },
-        { value: 6, label: "Samedi" },
-        { value: 7, label: "Dimanche" }
+    // Time of day options with French labels
+    const timeOfDayOptions = [
+        {
+            id: "morning",
+            label: "Matin",
+            icon: Sun,
+            color: "bg-orange-100 border-orange-200 text-orange-700",
+            activeColor: "bg-orange-500 border-orange-600 text-white",
+            description: "Entre 6h - 10h",
+            defaultTime: "08:00"
+        },
+        {
+            id: "noon",
+            label: "Midi",
+            icon: Coffee,
+            color: "bg-yellow-100 border-yellow-200 text-yellow-700",
+            activeColor: "bg-yellow-500 border-yellow-600 text-white",
+            description: "Entre 12h - 14h",
+            defaultTime: "13:00"
+        },
+        // {
+        //     id: "afternoon",
+        //     label: "Après-midi",
+        //     icon: Clock,
+        //     color: "bg-blue-100 border-blue-200 text-blue-700",
+        //     activeColor: "bg-blue-500 border-blue-600 text-white",
+        //     description: "Entre 15h - 17h",
+        //     defaultTime: "16:00"
+        // },
+        {
+            id: "evening",
+            label: "Soir",
+            icon: Moon,
+            color: "bg-indigo-100 border-indigo-200 text-indigo-700",
+            activeColor: "bg-indigo-500 border-indigo-600 text-white",
+            description: "Entre 18h - 21h",
+            defaultTime: "20:00"
+        },
+        // {
+        //     id: "night",
+        //     label: "Nuit",
+        //     icon: X,
+        //     color: "bg-gray-100 border-gray-200 text-gray-700",
+        //     activeColor: "bg-gray-700 border-gray-800 text-white",
+        //     description: "Entre 22h - 5h",
+        //     defaultTime: "22:00"
+        // }
     ];
+
 
     const frequencyOptions = [
         { value: "once daily", label: "Une fois par jour" },
@@ -54,14 +93,6 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
         { value: "cream", label: "Crème" },
         { value: "inhaler", label: "Inhalateur" }
     ];
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
 
     const handleMedicineInputChange = (e) => {
         const { name, value, type } = e.target;
@@ -83,27 +114,13 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
         }
     };
 
-    const handleDaysOfWeekChange = (dayValue) => {
+    const handleTimeOfDaySelect = (timeId) => {
         setMedicineFormData(prev => {
-            const currentDays = prev.dosage.daysOfWeek;
-            const newDays = currentDays.includes(dayValue)
-                ? currentDays.filter(d => d !== dayValue)
-                : [...currentDays, dayValue].sort();
+            const currentTimes = prev.dosage.specificTimes;
+            const newTimes = currentTimes.includes(timeId)
+                ? currentTimes.filter(t => t !== timeId)
+                : [...currentTimes, timeId];
 
-            return {
-                ...prev,
-                dosage: {
-                    ...prev.dosage,
-                    daysOfWeek: newDays
-                }
-            };
-        });
-    };
-
-    const handleSpecificTimeChange = (index, value) => {
-        setMedicineFormData(prev => {
-            const newTimes = [...prev.dosage.specificTimes];
-            newTimes[index] = value;
             return {
                 ...prev,
                 dosage: {
@@ -114,63 +131,14 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
         });
     };
 
-    const addSpecificTime = () => {
-        setMedicineFormData(prev => ({
-            ...prev,
-            dosage: {
-                ...prev.dosage,
-                specificTimes: [...prev.dosage.specificTimes, "08:00"]
-            }
-        }));
-    };
-
-    const removeSpecificTime = (index) => {
-        setMedicineFormData(prev => ({
-            ...prev,
-            dosage: {
-                ...prev.dosage,
-                specificTimes: prev.dosage.specificTimes.filter((_, i) => i !== index)
-            }
-        }));
-    };
-
-    const openMedicineModal = (index = null) => {
-        if (index !== null) {
-            setMedicineFormData(formData.medications[index]);
-            setActiveMedicineIndex(index);
-        } else {
-            setMedicineFormData({
-                name: "",
-                genericName: "",
-                strength: "",
-                form: "",
-                dosage: {
-                    amount: 1,
-                    unit: "tablet",
-                    frequency: "once daily",
-                    timesPerDay: 1,
-                    specificTimes: ["08:00"],
-                    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
-                    instructions: ""
-                },
-                status: "active",
-                hasStock: true,
-                startDate: new Date().toISOString().split('T')[0],
-                endDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split('T')[0]
-            });
-            setActiveMedicineIndex(null);
-        }
-        setShowMedicineModal(true);
-    };
-
     const addMedicine = async () => {
         if (!medicineFormData.name || !medicineFormData.strength) {
             alert("Veuillez remplir au moins le nom et la force du médicament");
             return;
         }
 
-        const newMedicine = { ...medicineFormData, prescriptionId: prescriptionId };
-        const result = await saveMedicine(prescriptionId, newMedicine);
+
+        const result = await saveMedicine(prescriptionId, medicineFormData);
 
         if (result?.success) {
             toast.success("Médicament ajouté avec succès");
@@ -196,15 +164,9 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
         closeMedicineModal();
     };
 
-    const removeMedicine = (index) => {
-        setFormData(prev => ({
-            ...prev,
-            medications: prev.medications.filter((_, i) => i !== index)
-        }));
-    };
     return (
         <div className="fixed inset-0 bg-black/70 bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-xl w-full container max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-xl w-full container  max-h-[90vh] overflow-y-auto">
                 <div className="sticky top-0 bg-white z-10 border-b p-6">
                     <div className="flex justify-between items-center">
                         <h2 className="text-xl font-bold text-[#0D1B2A] flex items-center gap-2">
@@ -288,10 +250,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             </select>
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                En stock
-                            </label>
+                        <div className="flex flex-col justify-center">
                             <div className="flex items-center h-[42px]">
                                 <input
                                     type="checkbox"
@@ -300,7 +259,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                                     onChange={handleMedicineInputChange}
                                     className="w-5 h-5 text-[#6A5CFF] rounded"
                                 />
-                                <span className="ml-2 text-sm text-gray-600">Disponible</span>
+                                <span className="ml-2 text-sm text-gray-600">En stock</span>
                             </div>
                         </div>
                     </div>
@@ -311,7 +270,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             <Clock size={16} /> Posologie
                         </h5>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Quantité par dose
@@ -335,13 +294,13 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                                     name="dosage.unit"
                                     value={medicineFormData.dosage.unit}
                                     onChange={handleMedicineInputChange}
-                                    placeholder="Ex: tablet, ml"
+                                    placeholder="Ex: comprimé, ml"
                                     className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
                                 />
                             </div>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Fréquence
                             </label>
@@ -359,70 +318,48 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             </select>
                         </div>
 
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Jours de la semaine
+                        {/* Time of Day Selection */}
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-3">
+                                Moment de la journée *
                             </label>
-                            <div className="flex flex-wrap gap-2">
-                                {daysOfWeekOptions.map((day, index) => (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        onClick={() => handleDaysOfWeekChange(day.value)}
-                                        className={`px-3 py-1 rounded-lg text-sm ${medicineFormData.dosage.daysOfWeek.includes(day.value)
-                                            ? 'bg-[#6A5CFF] text-white'
-                                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                            }`}
-                                    >
-                                        {day.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="mt-4">
-                            <div className="flex justify-between items-center mb-2">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Heures spécifiques
-                                </label>
-                                <button
-                                    type="button"
-                                    onClick={addSpecificTime}
-                                    className="text-sm text-[#6A5CFF] hover:text-[#4DA2FF] flex items-center gap-1"
-                                >
-                                    <Plus size={14} /> Ajouter une heure
-                                </button>
-                            </div>
-                            <div className="space-y-2">
-                                {medicineFormData.dosage.specificTimes.map((time, index) => (
-                                    <div key={index} className="flex gap-2">
-                                        <input
-                                            type="time"
-                                            value={time}
-                                            onChange={(e) => handleSpecificTimeChange(index, e.target.value)}
-                                            className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
-                                        />
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {timeOfDayOptions.map((time) => {
+                                    const Icon = time.icon;
+                                    const isSelected = medicineFormData.dosage.specificTimes.includes(time.id);
+                                    return (
                                         <button
+                                            key={time.id}
                                             type="button"
-                                            onClick={() => removeSpecificTime(index)}
-                                            className="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200"
+                                            onClick={() => handleTimeOfDaySelect(time.id)}
+                                            className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-200 ${isSelected
+                                                ? time.activeColor + ' border-2 shadow-md scale-102'
+                                                : time.color + ' hover:shadow-md hover:scale-101'
+                                                }`}
                                         >
-                                            <X size={16} />
+                                            <Icon size={20} className="mb-1" />
+                                            <span className="text-sm font-medium">{time.label}</span>
+                                            <span className="text-xs mt-1 opacity-75">{time.description}</span>
                                         </button>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
+                            <p className="text-sm text-gray-500 mt-2">
+                                Sélectionné: {medicineFormData.dosage.specificTimes.length} moment(s)
+                            </p>
                         </div>
 
-                        <div className="mt-4">
+
+                        {/* Instructions */}
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Instructions
+                                Instructions supplémentaires
                             </label>
                             <textarea
                                 name="dosage.instructions"
                                 value={medicineFormData.dosage.instructions}
                                 onChange={handleMedicineInputChange}
-                                placeholder="Ex: Take after meals, with plenty of water"
+                                placeholder="Ex: Prendre après les repas, avec un grand verre d'eau"
                                 rows="2"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
                             />
@@ -446,24 +383,27 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Total Days
+                                Durée (jours)
                             </label>
                             <input
                                 type="number"
                                 name="totalDays"
                                 value={medicineFormData.totalDays}
                                 onChange={handleMedicineInputChange}
+                                placeholder="Ex: 7 pour une semaine"
+                                min="1"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6A5CFF] focus:border-transparent"
                             />
                         </div>
                     </div>
 
-                    {/* Medicine Form Buttons */}
+
+                    {/* Buttons */}
                     <div className="flex gap-3 pt-6 border-t">
                         <button
                             type="button"
                             onClick={closeMedicineModal}
-                            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors"
+                            className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors font-medium"
                         >
                             Annuler
                         </button>
@@ -471,7 +411,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             <button
                                 type="button"
                                 onClick={updateMedicine}
-                                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors"
+                                className="flex-1 px-4 py-3 bg-green-600 text-white rounded-xl hover:bg-green-700 transition-colors font-medium"
                             >
                                 Mettre à jour
                             </button>
@@ -479,7 +419,7 @@ export default function AddMedicine({ activeMedicineIndex, closeMedicineModal, p
                             <button
                                 type="button"
                                 onClick={addMedicine}
-                                className="flex-1 px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl hover:opacity-90 transition-opacity"
+                                className="flex-1 px-4 py-3 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl hover:opacity-90 transition-opacity font-medium"
                             >
                                 Ajouter le médicament
                             </button>

@@ -121,6 +121,34 @@ export function useAuth() {
         }
     }, []);
 
+
+    // Send password reset link
+    const sendPasswordResetLink = useCallback(async (email) => {
+        setState(prev => ({ ...prev, loading: true, error: null }));
+
+        try {
+            await api.sendPswrdResetLink(email);
+
+            setState({
+                user: null,
+                loading: false,
+                error: null,
+                isAuthenticated: false,
+            });
+
+            return { success: true };
+        } catch (error) {
+            setState(prev => ({
+                ...prev,
+                loading: false,
+                error: error.message,
+                isAuthenticated: false,
+            }));
+
+            return { success: false, error: error.message };
+        }
+    }, []);
+
     // Initialize
     useEffect(() => {
         checkAuth();
@@ -132,5 +160,6 @@ export function useAuth() {
         register,
         logout,
         checkAuth,
+        sendPasswordResetLink
     };
 }

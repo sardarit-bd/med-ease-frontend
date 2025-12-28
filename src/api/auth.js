@@ -11,6 +11,10 @@ export async function registerUser(userData) {
     return apiPost('/auth/register', userData);
 }
 
+// Send password reset link
+export async function sendPswrdResetLink(email) {
+    return apiPost('/auth/forgot-password', { email });
+}
 // Get current user
 export async function getCurrentUser() {
     return apiGet('/auth/me');

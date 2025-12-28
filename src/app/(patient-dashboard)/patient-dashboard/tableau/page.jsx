@@ -1,6 +1,9 @@
 "use client";
 
-import { AlertCircle, ChevronRight, Clock, Pill } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { todayFormatted } from "../pilulier/page";
+import DoseList from "./DoseList";
+import Summery from "./Summery";
 
 export default function DashboardPage() {
     return (
@@ -9,7 +12,7 @@ export default function DashboardPage() {
             {/* HEADER GREETING */}
             <div className="w-full rounded-2xl p-6 md:p-8 text-white bg-gradient-to-r from-[#7A5CF4] via-[#C95BF4] to-[#4D9FF5] shadow-md">
                 <p className="text-lg">Bonjour Ines 👋</p>
-                <h1 className="text-3xl font-bold mt-1">1er novembre 2025</h1>
+                <h1 className="text-3xl font-bold mt-1">{todayFormatted}</h1>
                 <p className="mt-3 opacity-90 text-sm">
                     Consultez votre journée dès l’ouverture de l’application. Visualisez tous les traitements à suivre et validez les prises.
                 </p>
@@ -24,39 +27,7 @@ export default function DashboardPage() {
             </div>
 
             {/* TOP STAT CARDS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-
-                {/* Card 1 */}
-                <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-2">
-                        <Pill className="text-red-500" size={20} />
-                        <span className="text-red-500 text-sm font-medium">Alerte</span>
-                    </div>
-                    <h1 className="text-4xl font-bold mt-3 text-red-500">02</h1>
-                    <p className="text-gray-600 mt-1 text-sm">Stock bas à renouveler</p>
-                </div>
-
-                {/* Card 2 */}
-                <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-2">
-                        <AlertCircle className="text-blue-500" size={20} />
-                        <span className="text-blue-500 text-sm font-medium">Info</span>
-                    </div>
-                    <h1 className="text-4xl font-bold mt-3 text-blue-500">04</h1>
-                    <p className="text-gray-600 mt-1 text-sm">Médicaments périmés</p>
-                </div>
-
-                {/* Card 3 */}
-                <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-2">
-                        <Clock className="text-purple-500" size={20} />
-                        <span className="text-purple-500 text-sm font-medium">Aujourd’hui</span>
-                    </div>
-                    <h1 className="text-4xl font-bold mt-3 text-purple-500">04</h1>
-                    <p className="text-gray-600 mt-1 text-sm">Traitements à prendre</p>
-                </div>
-
-            </div>
+            <Summery />
 
             {/* TODAY TREATMENTS */}
             <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -64,44 +35,7 @@ export default function DashboardPage() {
                 {/* Left column */}
                 <div className="lg:col-span-2 space-y-6">
 
-                    <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-                        <div className="flex justify-between items-center">
-                            <h2 className="font-bold text-lg">Mes traitements du jour</h2>
-                            <button className="text-blue-600 text-sm font-medium">Voir tout</button>
-                        </div>
-                        <p className="text-gray-500 text-sm">4 prises prévues</p>
-
-                        {/* List */}
-                        <div className="space-y-3 mt-5">
-
-                            {[
-                                { name: "Helicidane", time: "Matin", qty: "1 cuillère(s)", hour: "09:00", status: "Pris" },
-                                { name: "Asturgil", time: "Matin", qty: "2 pulvérisation(s)", hour: "09:00", status: "Pris" },
-                                { name: "Doliprane", time: "Midi", qty: "1 comprimé 1000mg", hour: "12:20", status: "À prendre" },
-                                { name: "Levothyrox", time: "Soir", qty: "1 comprimé 75µg", hour: "18:00", status: "À venir" },
-                            ].map((item, i) => (
-                                <div key={i} className="flex justify-between items-center p-3 border border-gray-200 rounded-xl">
-                                    <div>
-                                        <h4 className="font-medium">{item.name}</h4>
-                                        <p className="text-xs text-gray-500">{item.time} · {item.qty}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-semibold text-gray-700">{item.hour}</p>
-                                        <p className="text-xs text-gray-500">{item.status}</p>
-                                    </div>
-                                </div>
-                            ))}
-
-                        </div>
-
-                        {/* Progress Bar */}
-                        <div className="mt-5">
-                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div className="h-full bg-green-500 w-1/2"></div>
-                            </div>
-                            <p className="text-sm text-gray-500 mt-1">Observance du jour <span className="text-green-600 font-medium">50%</span></p>
-                        </div>
-                    </div>
+                    <DoseList />
 
                 </div>
 
