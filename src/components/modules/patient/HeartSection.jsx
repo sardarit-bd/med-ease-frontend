@@ -57,13 +57,9 @@ export default function HeartSection() {
 
                     {/* Center heart image */}
                     <div className="flex justify-center items-center md:col-span-1 relative">
-                        <Image
-                            src="/images/red_heart.png" // replace with your 3D red heart image
-                            alt="Human heart illustration"
-                            width={300}
-                            height={300}
-                            className="relative z-10"
-                        />
+                        <video className="relative h-full scale-110  lg:scale-170 z-10" autoPlay loop muted playsInline>
+                            <source src="/images/heart.webm" type="video/webm" />
+                        </video>
                         <h1 className="absolute text-[5rem] md:text-[7rem] font-extrabold text-gray-200 tracking-tight uppercase select-none leading-none opacity-30 z-0 text-outline-brand">
                             CHAQUE<br />MINUTE<br />COMPTE
                         </h1>
