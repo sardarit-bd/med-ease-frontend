@@ -6,7 +6,6 @@ import {
     Download,
     Plus,
     PlusCircle,
-    RefreshCw,
     Send,
     User,
     X
@@ -104,8 +103,8 @@ export default function OrdonnancesPage() {
                         onClick={() => setShowAddForm(!showAddForm)}
                         className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl shadow text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
                     >
-                        {showAddForm ? <X size={16} /> : <PlusCircle size={16} />}
-                        {showAddForm ? "Annuler" : "Ajouter"}
+                        <span>{showAddForm ? <X size={16} /> : <PlusCircle size={16} />}</span>
+                        <span>{showAddForm ? "Annuler" : "Ajouter"}</span>
                     </button>
                 </div>
             </div>
@@ -256,240 +255,112 @@ export default function OrdonnancesPage() {
 
                 {/* LEFT COLUMN */}
                 <div className="lg:col-span-2 space-y-6">
+                    {prescriptions.length > 0 && prescriptions.map((prescription, index) => {
+                        const time = Math.ceil(
+                            (new Date(prescription.validUntil) - new Date(prescription.prescriptionDate)) /
+                            (1000 * 60 * 60 * 24)
+                        )
+                        const isExpired = time <= 0;
+                        return (
+                            // STYLED PRESCRIPTION CARD BASED ON EXPIRY , DEMO ARE GIVEN BELOW
+                            <>
+                                <div key={prescription._id}
+                                    className={`rounded-xl shadow p-6 border ${isExpired
+                                        ? "bg-[#FFF3DF] border-[#FFE2B6]"
+                                        : "bg-white border-gray-200"
+                                        }`}>
+                                    <div className="flex justify-between items-center mb-3">
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <User
+                                                size={22}
+                                                className={
+                                                    isExpired
+                                                        ? "text-orange-600"
+                                                        : "text-blue-600"
+                                                }
+                                            />
+                                            <div>
+                                                <h3 className="font-semibold text-gray-800">{prescription.doctorName}</h3>
+                                                <p className="text-xs text-gray-500">{prescription.doctorType}</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => openMedicineModal(prescription._id)}
+                                            className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
+                                        >
+                                            <Plus size={16} />
+                                            Ajouter un médicament
+                                        </button>
+                                    </div>
 
-                    {prescriptions.length > 0 && prescriptions.map((prescription, index) => (
-                        <div className="bg-white rounded-xl shadow p-6 border" >
-                            <div className="flex justify-between items-center mb-3">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <User size={22} className="text-blue-600" />
-                                    <div>
-                                        <h3 className="font-semibold text-gray-800">{prescription.doctorName}</h3>
-                                        <p className="text-xs text-gray-500">{prescription.doctorType}</p>
+                                    <p className="text-xs text-gray-500">
+                                        Date de prescription:{" "}
+                                        <strong>{new Date(prescription.prescriptionDate).toLocaleDateString('en-GB')}</strong>
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        Valide jusqu’au:{" "}
+                                        <strong
+                                            className={
+                                                isExpired
+                                                    ? "text-red-600"
+                                                    : "text-blue-600"
+                                            }
+                                        >
+                                            {new Date(
+                                                prescription.validUntil
+                                            ).toLocaleDateString("en-GB")}{" "}
+                                            ({isExpired
+                                                ? "Expirée"
+                                                : `${time} jours`}
+                                            )
+                                        </strong>
+                                    </p>
+
+
+                                    {prescription.medicines && prescription.medicines.length > 0 && (
+                                        <>
+                                            <p className="text-xs text-gray-700 mt-3 font-medium">
+                                                Médicaments prescrits:
+                                            </p>
+                                            {prescription.medicines.map((med, medIndex) => (
+
+                                                <>
+
+                                                    <div className="mt-1 text-xs text-gray-600">
+                                                        {med.name} • {med.strength} • {med.form}
+                                                    </div>
+
+
+                                                    <div className="mt-4">
+                                                        <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                                                            {Math.ceil((med?.takenDays / med?.totalDays) * 100) > 0 && (<div className={`h-full  bg-green-600 w-[${Math.ceil((med?.takenDays / med?.totalDays) * 100)}%]`}></div>)}
+
+                                                        </div>
+                                                        <p className="text-xs text-gray-500 mt-1 text-right">
+                                                            {med?.takenDays}/{med?.totalDays} jours
+                                                        </p>
+                                                    </div>
+                                                </>
+                                            ))}
+                                        </>)}
+
+                                    {/* Buttons */}
+                                    <div className="flex gap-3 mt-4">
+                                        <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
+                                            <Download size={16} /> Télécharger
+                                        </button>
+                                        <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
+                                            <Send size={16} /> Envoyer
+                                        </button>
                                     </div>
                                 </div>
-                                <button
-                                    type="button"
-                                    onClick={() => openMedicineModal(prescription._id)}
-                                    className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
-                                >
-                                    <Plus size={16} />
-                                    Ajouter un médicament
-                                </button>
-                            </div>
-
-                            <p className="text-xs text-gray-500">
-                                Date de prescription:{" "}
-                                <strong>{new Date(prescription.prescriptionDate).toLocaleDateString('en-GB')}</strong>
-                            </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                                Valide jusqu'au:{" "}
-                                <strong className="text-red-500">
-                                    {new Date(prescription.validUntil).toLocaleDateString('en-GB')} (
-                                    {Math.ceil(
-                                        (new Date(prescription.validUntil) - new Date(prescription.prescriptionDate)) /
-                                        (1000 * 60 * 60 * 24)
-                                    )}{" "}
-                                    jours)
-                                </strong>
-                            </p>
+                            </>
+                        )
+                    })}
 
 
-                            {prescription.medicines && prescription.medicines.length > 0 && (
-                                <>
-                                    <p className="text-xs text-gray-700 mt-3 font-medium">
-                                        Médicaments prescrits:
-                                    </p>
-                                    {prescription.medicines.map((med, medIndex) => (
 
-                                        <>
-
-                                            <div className="mt-1 text-xs text-gray-600">
-                                                {med.name} • {med.strength} • {med.form}
-                                            </div>
-
-
-                                            <div className="mt-4">
-                                                <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                                    {Math.ceil((med?.takenDays / med?.totalDays) * 100) > 0 && (<div className={`h-full  bg-green-600 w-[${Math.ceil((med?.takenDays / med?.totalDays) * 100)}%]`}></div>)}
-
-                                                </div>
-                                                <p className="text-xs text-gray-500 mt-1 text-right">
-                                                    {med?.takenDays}/{med?.totalDays} jours
-                                                </p>
-                                            </div>
-                                        </>
-                                    ))}
-                                </>)}
-
-                            {/* Buttons */}
-                            <div className="flex gap-3 mt-4">
-                                <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                    <Download size={16} /> Télécharger
-                                </button>
-                                <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                    <Send size={16} /> Envoyer
-                                </button>
-                            </div>
-                        </div>
-
-                    ))}
-
-                    {/* CARD 1 — DR MARTIN */}
-                    <div className="bg-white rounded-xl shadow p-6 border">
-                        <div className="flex justify-between items-center mb-3">
-                            <div className="flex items-center gap-3 mb-2">
-                                <User size={22} className="text-blue-600" />
-                                <div>
-                                    <h3 className="font-semibold text-gray-800">Dr. Martin</h3>
-                                    <p className="text-xs text-gray-500">Médecin généraliste</p>
-                                </div>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => openMedicineModal()}
-                                className="px-4 py-2 bg-gradient-to-r from-[#6A5CFF] to-[#4DA2FF] text-white rounded-xl text-sm flex items-center gap-2 hover:opacity-90 transition-opacity"
-                            >
-                                <Plus size={16} />
-                                Ajouter un médicament
-                            </button>
-                        </div>
-
-                        <p className="text-xs text-gray-500">
-                            Date de prescription: <strong>15/10/2025</strong>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu'au:{" "}
-                            <strong className="text-red-500">15/11/2025 (14 jours)</strong>
-                        </p>
-
-                        <p className="text-xs text-gray-700 mt-3 font-medium">
-                            Médicaments prescrits:
-                        </p>
-
-                        <div className="mt-1 text-xs text-gray-600">
-                            Delipane 1000mg • Helicidine sirop
-                        </div>
-
-                        {/* Progress */}
-                        <div className="mt-4">
-                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div className="h-full w-1/3 bg-green-600"></div>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1 text-right">
-                                14/30 jours
-                            </p>
-                        </div>
-
-                        {/* Buttons */}
-                        <div className="flex gap-3 mt-4">
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Download size={16} /> Télécharger
-                            </button>
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Send size={16} /> Envoyer
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* CARD 2 — DR DUBOIS */}
-                    <div className="bg-white rounded-xl shadow p-6 border">
-                        <div className="flex items-center gap-3 mb-2">
-                            <User size={22} className="text-indigo-600" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800">Dr. Dubois</h3>
-                                <p className="text-xs text-gray-500">Endocrinologue</p>
-                            </div>
-                        </div>
-
-                        <p className="text-xs text-gray-500">
-                            Date de prescription: <strong>20/09/2025</strong>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu'au:{" "}
-                            <strong className="text-blue-600">28/11/2025 (27 jours)</strong>
-                        </p>
-
-                        <p className="text-xs text-gray-700 mt-3 font-medium">
-                            Médicaments prescrits:
-                        </p>
-
-                        <div className="mt-1 text-xs text-gray-600">
-                            Levothyrox 75μg
-                        </div>
-
-                        {/* Progress */}
-                        <div className="mt-4">
-                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div className="h-full w-2/3 bg-green-600"></div>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1 text-right">
-                                27/90 jours
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3 mt-4">
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Download size={16} /> Télécharger
-                            </button>
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Send size={16} /> Envoyer
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* CARD 3 — DR LEFEVRE (RENEW) */}
-                    <div className="bg-[#FFF3DF] border border-[#FFE2B6] rounded-xl shadow p-6">
-                        <div className="flex items-center gap-3 mb-2">
-                            <User size={22} className="text-orange-600" />
-                            <div>
-                                <h3 className="font-semibold text-gray-800">Dr. Lefevre</h3>
-                                <p className="text-xs text-gray-500">Pneumologue</p>
-                            </div>
-                        </div>
-
-                        <p className="text-xs text-gray-500">
-                            Date de prescription: <strong>25/10/2025</strong>
-                        </p>
-
-                        <p className="text-xs text-gray-500 mt-1">
-                            Valide jusqu'au:{" "}
-                            <strong className="text-red-600">
-                                10/11/2025 (9 jours)
-                            </strong>
-                        </p>
-
-                        <p className="text-xs text-gray-700 mt-3 font-medium">
-                            Médicaments prescrits:
-                        </p>
-
-                        <div className="mt-1 text-xs text-gray-600">
-                            Asturgil spray • Ventoline
-                        </div>
-
-                        {/* Progress */}
-                        <div className="mt-4">
-                            <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                                <div className="h-full w-1/4 bg-red-600"></div>
-                            </div>
-                            <p className="text-xs text-gray-500 mt-1 text-right">
-                                9/30 jours
-                            </p>
-                        </div>
-
-                        <div className="flex gap-3 mt-4">
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Download size={16} /> Télécharger
-                            </button>
-
-                            <button className="px-4 py-2 bg-white text-sm border rounded-xl shadow flex items-center gap-2">
-                                <Send size={16} /> Envoyer
-                            </button>
-
-                            <button className="px-4 py-2 bg-orange-600 text-white text-sm rounded-xl shadow flex items-center gap-2">
-                                <RefreshCw size={16} /> Renouveler
-                            </button>
-                        </div>
-                    </div>
 
                 </div>
 

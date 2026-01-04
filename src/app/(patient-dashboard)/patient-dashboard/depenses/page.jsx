@@ -167,7 +167,7 @@ export default function DepensesPage() {
                                         <h4 className="font-semibold text-gray-700">{item.title}</h4>
                                     </div>
 
-                                    <p classname="text-xs text-gray-500 mt-1">{item.date}</p>
+                                    <p className="text-xs text-gray-500 mt-1">{item.date}</p>
                                     <p className="text-xs text-gray-500">
                                         Total: <strong>{item.total} €</strong>
                                     </p>

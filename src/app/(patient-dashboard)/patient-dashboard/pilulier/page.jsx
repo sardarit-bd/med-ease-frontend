@@ -5,6 +5,7 @@ import {
     Camera,
     Clock
 } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 export const todayFormatted = `Today, ${new Date().toLocaleDateString('en-US', {
@@ -18,7 +19,6 @@ export default function PilulierPage() {
 
     async function loadTodayDoses() {
         const doses = await fetchTodayDoses();
-        console.log("Fetched today's doses:", doses);
         setTodayDoses(doses);
     }
     useEffect(() => {
@@ -26,55 +26,56 @@ export default function PilulierPage() {
     }, [fetchTodayDoses]);
 
 
-    const markMorningDoseAsTaken = async () => {
-        const morningDoses = todayDoses?.morning || [];
-        if (morningDoses.length === 0) return;
-        morningDoses.forEach(async (dose) => {
+    const markTaken = async (doses) => {
+        let successCount = 0;
+        doses.forEach(async (dose) => {
             const result = await markAsTaken(dose._id);
             if (result.success) {
-                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
-            } else {
-                toast.error(`${result.error}`);
+                successCount++;
             }
         });
 
+        return successCount;
+    }
+
+    const markMorningDoseAsTaken = async () => {
+        const morningDoses = todayDoses?.morning || [];
+        if (morningDoses.length === 0) return;
+
+        const successCount = await markTaken(morningDoses);
+        toast.success(`${successCount} dose(s) marquée(s) comme prise(s).`);
         loadTodayDoses();
     }
 
     const markNoonDoseAsTaken = async () => {
-        // Implement the logic to mark the noon dose as taken
         const noonDoses = todayDoses?.noon || [];
         if (noonDoses.length === 0) return;
 
-        noonDoses.forEach(async (dose) => {
-            const result = await markAsTaken(dose._id);
-            if (result.success) {
-                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
-            } else {
-                toast.error(`${result.error}`);
-            }
-        });
-
-        // loadTodayDoses();
-    }
-
-    const markEveningDoseAsTaken = async () => {
-        // Implement the logic to mark the evening dose as taken
-        const eveningDoses = todayDoses?.evening || [];
-        if (eveningDoses.length === 0) return;
-        eveningDoses.forEach(async (dose) => {
-            const result = await markAsTaken(dose._id);
-            if (result.success) {
-                toast.success(`Dose for ${dose.medicine.name} marked as taken.`);
-            } else {
-                toast.error(`${result.error}`);
-            }
-        });
+        const successCount = await markTaken(noonDoses);
+        toast.success(`${successCount} dose(s) marquée(s) comme prise(s).`);
         loadTodayDoses();
     }
 
+    const markEveningDoseAsTaken = async () => {
+
+        const eveningDoses = todayDoses?.evening || [];
+        if (eveningDoses.length === 0) return;
+        const successCount = await markTaken(eveningDoses);
+        toast.success(`${successCount} dose(s) marquée(s) comme prise(s).`);
+        loadTodayDoses();
+    }
+
+    const takenMornnig = todayDoses?.morning?.filter(dose => dose.status === 'taken')
+    const takenNoon = todayDoses?.noon?.filter(dose => dose.status === 'taken')
+    const takenEvenning = todayDoses?.evening?.filter(dose => dose.status === 'taken')
+
+
+    const taken = (takenEvenning?.length || 0) + (takenMornnig?.length || 0) + (takenNoon?.length || 0)
+
+    const totalDose = todayDoses?.morning?.length + todayDoses?.evening?.length + todayDoses?.noon?.length
+    const progress = Math.ceil((taken / totalDose) * 100)
     return (
-        <div className="min-h-screen bg-[#F4F7FB] p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
 
             {/* PAGE TITLE */}
             <div className="flex justify-between items-start mb-6">
@@ -86,23 +87,23 @@ export default function PilulierPage() {
                 </div>
 
                 <div className="flex gap-2">
-                    <button className="px-4 py-2 bg-white border text-sm rounded-xl shadow hover:bg-gray-50 flex items-center gap-2">
-                        <Camera size={16} /> Scanner
+                    <button className="px-4 py-2 bg-white border text-sm rounded-xl shadow hover:bg-gray-50">
+                        <Link href='/patient-dashboard/mes' className="flex items-center gap-2"><Camera size={16} /> Scanner</Link>
                     </button>
 
                     <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#6A5CFF] to-[#9C53FF] text-white shadow text-sm">
-                        + Ajouter
+                        <Link href='/patient-dashboard/mes'>+ Ajouter</Link>
                     </button>
                 </div>
             </div>
 
             {/* TABS */}
             <div className="flex gap-6 text-sm mb-6 font-medium">
-                <button className="text-[#6A5CFF] border-b-2 border-[#6A5CFF] pb-2">
+                <button className="text-[#6A5CFF] border-b-2 border-[#6A5CFF] pb-2 cursor-pointer">
                     Pilulier Actif
                 </button>
-                <button className="text-gray-500 pb-2">Historique</button>
-                <button className="text-gray-500 pb-2">Paramètres</button>
+                <button className="text-gray-500 pb-2 cursor-pointer">Historique</button>
+                <button className="text-gray-500 pb-2 cursor-pointer">Paramètres</button>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -152,14 +153,14 @@ export default function PilulierPage() {
                         </div> */}
 
                         {/* Action Buttons */}
-                        <div className="flex gap-2">
-                            <button onClick={markNoonDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
+                        {todayDoses?.noon?.length > 0 ? <div className="flex gap-2">
+                            <button onClick={markNoonDoseAsTaken} className="cursor-pointer px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
                                 Marquer comme pris
                             </button>
                             <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
                                 Rappel
                             </button>
-                        </div>
+                        </div> : <h2 className="text-center my-5 text-2xl opacity-70">Nothing to Take</h2>}
                     </div>
 
                     {/* ------------------  MATIN BLOCK ------------------ */}
@@ -207,14 +208,14 @@ export default function PilulierPage() {
                             </div>
                         </div> */}
 
-                        <div className="flex gap-2 mt-4">
+                        {todayDoses?.morning?.length > 0 ? <div className="flex gap-2 mt-4">
                             <button onClick={markMorningDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
                                 Marquer comme pris
                             </button>
                             <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
                                 Rappel
                             </button>
-                        </div>
+                        </div> : <h2 className="text-center my-5 text-2xl opacity-70">Nothing to Take</h2>}
                     </div>
 
                     {/* ------------------  SOIR BLOCK ------------------ */}
@@ -240,7 +241,7 @@ export default function PilulierPage() {
                             </>
                         ))}
                         {/* Levothyrox */}
-                        <div className="p-4 rounded-xl border bg-[#F5E8FF] border-[#E7D4FF] flex justify-between items-center mb-3">
+                        {/* <div className="p-4 rounded-xl border bg-[#F5E8FF] border-[#E7D4FF] flex justify-between items-center mb-3">
                             <div>
                                 <h4 className="font-semibold text-gray-700">Levothyrox</h4>
                                 <p className="text-xs text-gray-500">1 comprimé 75µg</p>
@@ -249,31 +250,27 @@ export default function PilulierPage() {
                                 <p className="text-sm font-semibold text-purple-600">19:00</p>
                                 <p className="text-xs text-gray-500">À venir</p>
                             </div>
-                        </div>
+                        </div> */}
 
-                        <div className="flex gap-2 mt-4">
-                            <button onClick={markEveningDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
-                                Marquer comme pris
-                            </button>
-                            <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
-                                Rappel
-                            </button>
-                        </div>
+                        {
+                            todayDoses?.evening?.length > 0 ? <div className="flex gap-2 mt-4">
+                                <button onClick={markEveningDoseAsTaken} className="px-4 py-2 bg-green-600 text-white rounded-xl text-xs shadow">
+                                    Marquer comme pris
+                                </button>
+                                <button className="px-4 py-2 bg-white border rounded-xl text-xs shadow">
+                                    Rappel
+                                </button>
+                            </div> : <h2 className="text-center my-5 text-2xl opacity-70">Nothing to Take</h2>
+                        }
                     </div>
 
                     {/* PROGRESS BAR */}
-                    <div className="bg-white rounded-xl p-5 border shadow-sm">
-                        <p className="text-sm font-medium text-gray-600">Observance du jour</p>
-
-                        <div className="mt-3 h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div className="h-full bg-green-600 w-1/2"></div>
+                    {progress ? <div className="mt-5">
+                        <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+                            <div style={{ width: `${progress}%` }} className={`h-full bg-green-500`}></div>
                         </div>
-
-                        <div className="flex justify-between text-xs text-gray-600 mt-2">
-                            <span>50%</span>
-                            <span className="text-green-600 font-medium">2 prises confirmées sur 4 prévues</span>
-                        </div>
-                    </div>
+                        <p className="text-sm text-gray-500 mt-1">Observance du jour <span className="text-green-600 font-medium">{progress}%</span></p>
+                    </div> : ""}
                 </div>
 
                 {/* ------------------ RIGHT SIDEBAR ------------------ */}
