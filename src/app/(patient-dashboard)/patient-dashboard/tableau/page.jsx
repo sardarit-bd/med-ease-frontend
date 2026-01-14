@@ -1,13 +1,13 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
 import { todayFormatted } from "../pilulier/page";
 import DoseList from "./DoseList";
+import RightColumn from "./RightColumn";
 import Summery from "./Summery";
 
 export default function DashboardPage() {
     return (
-        <div className="min-h-screen bg-[#F4F9F8] p-4 md:p-6">
+        <div className="min-h-screen p-4 md:p-6">
 
             {/* HEADER GREETING */}
             <div className="w-full rounded-2xl p-6 md:p-8 text-white bg-gradient-to-r from-[#7A5CF4] via-[#C95BF4] to-[#4D9FF5] shadow-md">
@@ -42,25 +42,7 @@ export default function DashboardPage() {
                 {/* Right column */}
                 <div className="space-y-6">
 
-                    {/* Pillulier Virtuel */}
-                    <div className="rounded-xl p-5 text-white bg-gradient-to-br from-[#5146F5] via-[#9A57F1] to-[#4AC7F9] shadow-md">
-                        <div className="flex items-center justify-between">
-                            <h3 className="font-bold">Pilulier Virtuel</h3>
-                            <ChevronRight size={20} className="opacity-80" />
-                        </div>
-                        <p className="text-sm opacity-90 mt-1">Gérez vos traitements quotidiens avec rappels intelligents</p>
-                        <p className="mt-4 text-xs opacity-90">• 2 prises confirmées aujourd’hui</p>
-                    </div>
-
-                    {/* Pharmacie Virtuelle */}
-                    <div className="rounded-xl p-5 text-white bg-gradient-to-br from-[#1BB8AA] to-[#0567D9] shadow-md">
-                        <div className="flex items-center justify-between">
-                            <h3 className="font-bold">Pharmacie Virtuelle</h3>
-                            <ChevronRight size={20} className="opacity-80" />
-                        </div>
-                        <p className="text-sm opacity-90 mt-1">Consultez votre stock et trouvez des pharmacies</p>
-                        <p className="mt-4 text-xs opacity-90">• 4 médicaments périmés</p>
-                    </div>
+                    <RightColumn />
 
                 </div>
             </div>

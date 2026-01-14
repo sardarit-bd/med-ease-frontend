@@ -14,7 +14,6 @@ export default function Summery() {
         loadSummary();
     }, []);
 
-    console.log('Dashboard Summary:', summary);
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
 
