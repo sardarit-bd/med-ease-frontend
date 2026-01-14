@@ -1,20 +1,20 @@
 "use client";
+
 import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import useAuthStore from "../../../store/useAuthStore";
+import HeaderActionBtn from "../publicHeader/ActionBtnAndFromWrper";
 
 
 const services = [
   { name: "Offre de soins", link: "/services/offre-de-soins" },
-  { name: "Cartographie", link: "/services/cartographie" },
-  { name: "Lits d’aval", link: "/services/lits-d-aval" },
-  { name: "SAS", link: "/services/sas" },
-  { name: "Transports Sanitaires", link: "/services/transports-sanitaires" },
-  { name: "RH", link: "/services/rh" },
-  { name: "Télémédecine", link: "/services/telemedecine" },
-  { name: "Pharma", link: "/services/pharma" },
-  { name: "Studio", link: "/services/studio" },
+  { name: "Maps de Santé", link: "/services/cartographie" },
+  { name: "Symptom Checker", link: "/services/lits-d-aval" },
+  { name: "Transports Sanitaires", link: "/services/sas" },
+  { name: "Lits d'hospitalisation", link: "/services/rh" },
+  { name: "Télémedecine", link: "/services/telemedecine" },
   { name: "Conciergerie Médicale", link: "/services/conciergerie-medicale" },
 ];
 
@@ -22,24 +22,27 @@ const services = [
 export default function Header() {
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const { setisopenActionForm } = useAuthStore();
 
   return (
     <header className="w-full bg-white fixed top-0 left-0 z-50 border-b border-[var(--light-background)]">
       <div className="max-w-7xl px-5 2xl:px-0 mx-auto flex items-center justify-between py-3">
         {/* Logo + Left side */}
         <div className="flex items-center gap-2">
-          <Image
-            src="/logos/headLogo.png"
-            alt="Med'ease Logo"
-            width={120}
-            height={40}
-            className="object-contain"
-          />
+          <Link href={'/'}>
+            <Image
+              src="/logos/headLogo.png"
+              alt="Med'ease Logo"
+              width={120}
+              height={40}
+              className="object-contain"
+            />
+          </Link>
           <Link
             href="#"
             className="hidden md:inline text-[var(--text-dark)] font-medium hover:text-[var(--primary)] transition"
           >
-            Professionnel
+            Patient
           </Link>
         </div>
 
@@ -50,11 +53,11 @@ export default function Header() {
               Services <ChevronDown size={16} />
             </div>
             {/* Dropdown */}
-            <div className="absolute hidden group-hover:flex flex-col bg-white border border-gray-100 rounded-md shadow-md mt-0 w-40">
+            <div className="absolute hidden group-hover:flex flex-col bg-white border border-gray-100 rounded-md shadow-md mt-0 w-[220px] py-4">
               {
                 services?.map((item, index) => {
                   return (
-                    <Link key={index} href={item?.link} className="px-4 py-2 hover:bg-[var(--light-background)] text-sm">
+                    <Link key={index} href={item?.link} className="px-6 py-2 hover:bg-[var(--light-background)] text-nowrap text-[14px] font-medium w-full">
                       {item.name}
                     </Link>
                   )
@@ -63,22 +66,29 @@ export default function Header() {
             </div>
           </div>
 
-          <Link href="#" className="hover:text-[var(--primary)] transition">
-            Votre santé
+          <Link href="/about" className="hover:text-[var(--primary)] transition">
+            About Us
           </Link>
 
-          <button className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold hover:opacity-90 transition">
-            J'agis
-          </button>
+          <Link href="/contactus" className="hover:text-[var(--primary)] transition">
+            Contact Us
+          </Link>
+
+
+          <HeaderActionBtn>
+            <button onClick={() => { setisopenActionForm(true) }} className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold hover:opacity-90 transition cursor-pointer">
+              J'agis
+            </button>
+          </HeaderActionBtn>
         </nav>
 
         {/* Mobile menu icon */}
         <button
-          className="md:hidden p-2"
+          className="md:hidden p-2 cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          {menuOpen ? <X className="cursor-pointer" size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
@@ -110,9 +120,8 @@ export default function Header() {
             Votre santé
           </Link>
 
-          <button onClick={() => console.log("Clicked")} type="button" className="px-5 py-2 mt-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-full cursor-pointer">
-            J'agis
-          </button>
+          <HeaderActionBtn />
+
         </div>
       )}
     </header>

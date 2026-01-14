@@ -20,18 +20,6 @@ const TempNavigator = () => {
             link: '/'
         },
         {
-            name: "Sign In",
-            link: '/auth/signin'
-        },
-        {
-            name: "Sign Up",
-            link: '/auth/signup'
-        },
-        {
-            name: "About",
-            link: '/about'
-        },
-        {
             name: "About2",
             link: '/about2'
         },

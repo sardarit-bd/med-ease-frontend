@@ -1,9 +1,14 @@
 "use client";
 
+import ActionBtnAndFromWrper from "@/components/publicHeader/ActionBtnAndFromWrper";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
+import useAuthStore from "../../../../store/useAuthStore";
 
 export default function HealthCTASection() {
+
+    const { setisopenActionForm } = useAuthStore();
+
     return (
         <section className="w-full bg-white py-20">
             <div className="max-w-7xl mx-auto text-center px-6 md:px-10">
@@ -54,10 +59,16 @@ export default function HealthCTASection() {
                         </p>
 
                         {/* CTA Button */}
-                        <button className="bg-white text-[var(--brandColor,#3074B5)] font-semibold px-8 py-3 rounded-full shadow-md hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2">
-                            J’agis pour ma Santé, ma Vie !
-                            <ArrowRight className="w-5 h-5" />
-                        </button>
+
+                        <ActionBtnAndFromWrper>
+
+                            <button onClick={() => { setisopenActionForm(true) }} className="bg-white text-[var(--brandColor,#3074B5)] font-semibold px-8 py-3 rounded-full shadow-md hover:scale-105 transition-transform duration-300 inline-flex items-center gap-2 cursor-pointer">
+                                J’agis pour ma Santé, ma Vie !
+                                <ArrowRight className="w-5 h-5" />
+                            </button>
+
+                        </ActionBtnAndFromWrper>
+
                     </div>
                 </div>
             </div>
