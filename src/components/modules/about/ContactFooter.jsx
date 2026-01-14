@@ -1,4 +1,5 @@
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
+import Link from "next/link";
 
 export default function ContactFooter() {
     const socials = [
@@ -19,12 +20,12 @@ export default function ContactFooter() {
             </p>
 
             {/* Contact Button */}
-            <a
-                href="#contact"
+            <Link
+                href="/contactus"
                 className="inline-block bg-gradient-to-r from-[#3074B5] to-[#61D0BF] text-white px-6 py-2 rounded-full font-medium shadow-sm hover:shadow-md transition-all duration-300"
             >
                 Contactez–nous
-            </a>
+            </Link>
 
             {/* Social Icons */}
             <div className="flex justify-center gap-4 mt-8">

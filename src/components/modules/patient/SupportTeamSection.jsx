@@ -2,8 +2,12 @@
 
 import { MessageCircle } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SupportTeamSection() {
+
+    const router = useRouter();
+
     return (
         <section className="w-full bg-[#F6FBFA] relative overflow-hidden">
             <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start justify-between px-6 md:px-10 gap-12 h-full pt-16 md:pt-20 pb-10 md:pb-0">
@@ -31,10 +35,12 @@ export default function SupportTeamSection() {
                         Notre équipe experte est toujours disponible pour échanger avec vous.
                     </p>
 
-                    <button className="bg-gradient-to-r from-[var(--brandColor,#3074B5)] to-[var(--brandBg,#61D0BF)] text-white font-semibold px-8 py-3 rounded-full shadow-md hover:scale-105 transition-transform inline-flex items-center gap-2">
+
+                    <button onClick={() => { router.push('/contactus') }} className="bg-gradient-to-r from-[var(--brandColor,#3074B5)] to-[var(--brandBg,#61D0BF)] text-white font-semibold px-8 py-3 rounded-full shadow-md hover:scale-105 transition-transform inline-flex cursor-pointer items-center gap-2">
                         <MessageCircle className="w-5 h-5" />
                         À votre écoute
                     </button>
+
                 </div>
             </div>
 

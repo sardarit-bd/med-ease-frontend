@@ -1,11 +1,16 @@
 "use client";
 
+import ActionBtnAndFromWrper from "@/components/publicHeader/ActionBtnAndFromWrper";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import herodoctorthapistopok from "../../../../public/icons/herodoctorthapistopok.png";
 import patienthero from "../../../../public/images/patienthero.png";
+import useAuthStore from "../../../../store/useAuthStore";
 
 export default function HeroSectionPatient() {
+
+    const { setisopenActionForm } = useAuthStore();
+
     return (
         <section
             className="relative w-full md:h-[80vh] bg-cover bg-center flex items-center overflow-hidden pt-16 md:pt-0"
@@ -31,9 +36,12 @@ export default function HeroSectionPatient() {
                         Profitez d’une plateforme complète pour suivre, gérer et améliorer <br /> votre santé au quotidien
                     </p>
 
-                    <button className="px-5 flex items-center gap-2 py-2 mt-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-fit cursor-pointer">
-                        J'agis pour ma Santé, ma Vie <ArrowRight size={18} />
-                    </button>
+                    <ActionBtnAndFromWrper>
+                        <button onClick={() => { setisopenActionForm(true) }} className="px-5 flex items-center gap-2 py-2 mt-2 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold w-fit cursor-pointer">
+                            J'agis pour ma Santé, ma Vie <ArrowRight size={18} />
+                        </button>
+                    </ActionBtnAndFromWrper>
+
                     <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF] text-2xl font-semibold mt-2">Votre Santé, notre Priorité</h2>
 
                 </div>

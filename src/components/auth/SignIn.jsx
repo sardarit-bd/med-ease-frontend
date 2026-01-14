@@ -3,12 +3,11 @@
 import SpinLoader from "@/components/shared/SpinLoader";
 import { useAuth } from "@/hooks";
 import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import useAuthStore from "../../../store/useAuthStore";
 
-
-export default function LoginPage() {
+const SignIn = () => {
 
     const router = useRouter();
     const [isLoading, setisLoading] = useState(false);
@@ -19,6 +18,7 @@ export default function LoginPage() {
     const [forgotSuccess, setForgotSuccess] = useState('');
     const [forgotError, setForgotError] = useState('');
 
+    const { issignin, setissignin, issignup, setissignup, isforgot, setisforgot } = useAuthStore();
 
     const { login, loading, error, sendPasswordResetLink } = useAuth();
     const [formData, setFormData] = useState({
@@ -42,10 +42,12 @@ export default function LoginPage() {
         });
     };
 
+
+
     return (
         <>
             {showForgotModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 px-4">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
                     <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl relative">
                         {/* Close */}
                         <button
@@ -114,17 +116,8 @@ export default function LoginPage() {
                 </div>
             )}
 
-            <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--brandColor,#3074B5)] to-[var(--brandBg,#61D0BF)] p-4">
-                <div className="w-full max-w-md bg-white backdrop-blur-md rounded-2xl shadow-xl p-8">
-                    {/* Logo / Title */}
-                    <div className="text-center mb-8">
-                        <h1 className="text-2xl font-bold text-[var(--brandColor,#3074B5)]">
-                            Med’Ease Portal
-                        </h1>
-                        <p className="text-gray-500 text-sm mt-1">
-                            Connectez-vous pour accéder à votre compte
-                        </p>
-                    </div>
+            <section className="">
+                <div className="p-8">
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-5">
@@ -173,21 +166,6 @@ export default function LoginPage() {
                             </button>
                         </div>
 
-                        <div className="flex justify-between text-sm text-gray-600">
-                            <label className="flex items-center gap-2">
-                                <input type="checkbox" className="accent-[var(--brandColor,#3074B5)]" />
-                                Remember me
-                            </label>
-                            <button
-                                type="button"
-                                onClick={() => setShowForgotModal(true)}
-                                className="text-[var(--brandColor,#3074B5)] hover:underline"
-                            >
-                                Forgot password?
-                            </button>
-
-                        </div>
-
                         <button
                             type="submit"
                             className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
@@ -200,13 +178,24 @@ export default function LoginPage() {
                     {/* Footer */}
                     <p className="text-center text-gray-500 text-sm mt-6">
                         Don’t have an account?{" "}
-                        <Link href="/auth/signup" className="text-[var(--brandColor,#3074B5)] font-medium hover:underline">
+                        <button onClick={() => { setissignup(true), setissignin(false) }} className="text-[var(--brandColor,#3074B5)] font-medium hover:underline cursor-pointer">
                             Sign up
-                        </Link>
+                        </button>
                     </p>
+                    <div className="flex justify-center mt-2 text-sm text-gray-600">
+                        <button
+                            type="button"
+                            onClick={() => setShowForgotModal(true)}
+                            className="text-[var(--brandColor,#3074B5)] hover:underline cursor-pointer"
+                        >
+                            Forgot password?
+                        </button>
+
+                    </div>
                 </div>
             </section>
         </>
-
-    );
+    )
 }
+
+export default SignIn;

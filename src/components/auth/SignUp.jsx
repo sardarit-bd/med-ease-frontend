@@ -6,12 +6,15 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import useAuthStore from "../../../store/useAuthStore";
 
-export default function RegisterPage() {
+
+const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const { register } = useAuth()
     const router = useRouter();
+    const { issignin, setissignin, issignup, setissignup, isforgot, setisforgot } = useAuthStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,18 +44,10 @@ export default function RegisterPage() {
         }
     };
 
+
     return (
-        <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[var(--brandColor,#3074B5)] to-[var(--brandBg,#61D0BF)] p-4">
-            <div className="w-full max-w-md bg-white backdrop-blur-md rounded-2xl shadow-xl p-8">
-                {/* Title */}
-                <div className="text-center mb-8">
-                    <h1 className="text-2xl font-bold text-[var(--brandColor,#3074B5)]">
-                        Create Your Med’Ease Account
-                    </h1>
-                    <p className="text-gray-500 text-sm mt-1">
-                        Join the platform to manage your healthcare easily
-                    </p>
-                </div>
+        <section className="">
+            <div className="p-8">
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -171,14 +166,16 @@ export default function RegisterPage() {
 
                 <p className="text-center text-gray-500 text-sm mt-6">
                     Already have an account?{" "}
-                    <Link
-                        href="/auth/signin"
-                        className="text-[var(--brandColor,#3074B5)] font-medium hover:underline"
+                    <button
+                        onClick={() => { setissignin(true), setissignup(false) }}
+                        className="text-[var(--brandColor,#3074B5)] font-medium hover:underline cursor-pointer"
                     >
                         Sign in
-                    </Link>
+                    </button>
                 </p>
             </div>
         </section>
-    );
+    )
 }
+
+export default SignUp;

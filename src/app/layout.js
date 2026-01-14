@@ -1,6 +1,5 @@
 import TempNavigator from "@/components/shared/TempNavigator";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ToastContainer } from "react-toastify";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,9 +25,7 @@ export default function RootLayout({ children }) {
       >
         {children}
 
-
         <TempNavigator />
-        <ToastContainer />
       </body>
     </html>
   );
