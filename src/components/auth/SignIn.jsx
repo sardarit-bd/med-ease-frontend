@@ -10,7 +10,6 @@ import useAuthStore from "../../../store/useAuthStore";
 const SignIn = () => {
 
     const router = useRouter();
-    const [isLoading, setisLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showForgotModal, setShowForgotModal] = useState(false);
     const [forgotEmail, setForgotEmail] = useState('');
@@ -18,7 +17,7 @@ const SignIn = () => {
     const [forgotSuccess, setForgotSuccess] = useState('');
     const [forgotError, setForgotError] = useState('');
 
-    const { issignin, setissignin, issignup, setissignup, isforgot, setisforgot } = useAuthStore();
+    const { setisopenActionForm, issignin, setissignin, issignup, setissignup, isforgot, setisforgot, isLoading, setisLoading } = useAuthStore();
 
     const { login, loading, error, sendPasswordResetLink } = useAuth();
     const [formData, setFormData] = useState({
@@ -29,9 +28,15 @@ const SignIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        setisLoading(true);
+
         const result = await login(formData);
+
+        setisLoading(false);
+        setisopenActionForm(false);
+
         if (result.success) {
-            router.replace('/patient-dashboard/tableau')
+            router.replace('/dashboard/patient/tableau')
         }
     };
 
@@ -42,6 +47,10 @@ const SignIn = () => {
         });
     };
 
+
+    if (isLoading) {
+        return <SpinLoader />;
+    }
 
 
     return (
@@ -170,7 +179,6 @@ const SignIn = () => {
                             type="submit"
                             className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
                         >
-                            {isLoading && <SpinLoader />}
                             Sign In
                         </button>
                     </form>

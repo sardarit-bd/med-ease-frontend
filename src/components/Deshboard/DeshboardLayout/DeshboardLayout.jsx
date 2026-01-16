@@ -1,12 +1,12 @@
 "use client"
 
+import DeshBordHeaderWrper from "@/components/Deshboard/DeshbaordHeader/DeshboardHeaderWrper";
+import DeshboradSidebarWrper from "@/components/Deshboard/DeshboardSidebar/DeshboradSidebarWrper";
 import { useState } from "react";
 import { RxCross2 } from "react-icons/rx";
-import Sidebar from "../../../components/modules/dashboard/Dasboardsidebar";
-import Header from "../../../components/modules/dashboard/DesboardHeader";
 
 
-export default function DashboardLayout({ children }) {
+function DashboardLayout({ header, sidebar, children }) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -24,13 +24,18 @@ export default function DashboardLayout({ children }) {
                 </>
             )}
 
-            <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+            <DeshboradSidebarWrper sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}>
+                {sidebar}
+            </DeshboradSidebarWrper>
+
             <div className="flex-1 flex flex-col overflow-hidden">
-                <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-                <div className="p-4">
+                <DeshBordHeaderWrper sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+                <div className="p-0 pt-[78px]">
                     {children}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
+
+export default DashboardLayout;

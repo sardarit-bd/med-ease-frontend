@@ -33,7 +33,7 @@ export default function DoseList() {
         <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div className="flex justify-between items-center">
                 <h2 className="font-bold text-lg">Mes traitements du jour</h2>
-                <button className="text-blue-600 text-sm font-medium cursor-pointer"><Link href='/patient-dashboard/pilulier'>Voir tout</Link></button>
+                <button className="text-blue-600 text-sm font-medium cursor-pointer"><Link href='/dashboard/patient/pilulier'>Voir tout</Link></button>
             </div>
             <p className="text-gray-500 text-sm">{totalDose} prises prévues</p>
 

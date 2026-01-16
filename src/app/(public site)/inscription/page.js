@@ -3,7 +3,7 @@ import InscriptionBanner from "@/components/modules/inscription/InscriptionBanne
 import NextStepsSection from "@/components/modules/inscription/NextStepsSection";
 import TopBarSection from "@/components/modules/inscription/TopBarSection";
 
-const { default: Header } = require("@/components/shared/Header")
+const { default: Header } = require("@/components/publicSite/publicHeader/Header")
 
 
 const Inscription = () => {

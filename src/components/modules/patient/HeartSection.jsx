@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import Image from "next/image";
 
 export default function HeartSection() {
@@ -17,7 +18,7 @@ export default function HeartSection() {
                 {/* Main content grid */}
                 <div className="relative mt-16 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                     {/* Left column */}
-                    <div className="flex flex-col gap-8 md:col-span-1 z-10">
+                    <motion.div animate={{ x: 0 }} initial={{ x: "-100%" }} className="flex flex-col gap-8 md:col-span-1 z-10">
                         <div className="bg-white customboxshadow p-6 text-left">
                             <Image
                                 src="/icons/EmergencyCallPlus.png"
@@ -53,7 +54,7 @@ export default function HeartSection() {
                                 Accédez rapidement à un lit disponible et adapté à vos besoins.
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Center heart image */}
                     <div className="flex justify-center items-center md:col-span-1 relative">
@@ -66,7 +67,7 @@ export default function HeartSection() {
                     </div>
 
                     {/* Right column */}
-                    <div className="flex flex-col gap-8 md:col-span-1 z-10">
+                    <motion.div animate={{ x: 0 }} initial={{ x: "100%" }} className="flex flex-col gap-8 md:col-span-1 z-10">
                         <div className="bg-white customboxshadow p-6 text-left">
                             <Image
                                 src="/icons/MedicalRecord.png"
@@ -102,7 +103,7 @@ export default function HeartSection() {
                                 Trouvez un médecin disponible près de chez vous en quelques clics.
                             </p>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

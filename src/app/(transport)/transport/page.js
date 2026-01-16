@@ -3,7 +3,7 @@ import AppPromotionBanner from "@/components/modules/transport/AppPromotionBanne
 import InformationsCles from "@/components/modules/transport/InformationsCles";
 import SuggestionsConseils from "@/components/modules/transport/SuggestionsConseils";
 import TransportSanitaireHero from "@/components/modules/transport/TransportSanitaireHero";
-import Header from "@/components/shared/Header";
+import Header from "@/components/publicSite/publicHeader/Header";
 
 const TransportPage = () => {
     return (
