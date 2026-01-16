@@ -16,7 +16,7 @@ const DeshboardHeaderUser = () => {
                         </div>
                         <div className="">
                             <h5 className="text-lg font-semibold text-gray-600">Emon Hossen</h5>
-                            <span className="bg-green-100 text-sm px-2 border border-green-300 rounded-xl">Admin</span>
+                            <span className="bg-green-100 text-sm px-2 border border-green-300 rounded-xl">Patient</span>
                         </div>
                     </div>
                     <div className="mt-5">

@@ -48,7 +48,7 @@ export default function CarnetPage() {
                     </div>
 
                     {/* Vaccination Status */}
-                    <div className="text-right">
+                    <div className="text-right flex flex-col gap-1">
                         <p className="text-xs opacity-75">Statut vaccinal</p>
                         <span className="text-sm bg-green-600 text-white px-4 py-1 rounded-full">
                             ✓ Tous les vaccins à jour
