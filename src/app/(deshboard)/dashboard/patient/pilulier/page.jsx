@@ -88,11 +88,11 @@ export default function PilulierPage() {
 
                 <div className="flex gap-2">
                     <button className="px-4 py-2 bg-white border text-sm rounded-xl shadow hover:bg-gray-50">
-                        <Link href='/patient-dashboard/mes' className="flex items-center gap-2"><Camera size={16} /> Scanner</Link>
+                        <Link href='/dashboard/patient/mes' className="flex items-center gap-2"><Camera size={16} /> Scanner</Link>
                     </button>
 
                     <button className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#6A5CFF] to-[#9C53FF] text-white shadow text-sm">
-                        <Link href='/patient-dashboard/mes'>+ Ajouter</Link>
+                        <Link href='/dashboard/patient/mes'>+ Ajouter</Link>
                     </button>
                 </div>
             </div>
