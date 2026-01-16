@@ -2,7 +2,7 @@
 
 
 import PatientSidebarNavigation from "../../../../components/Deshboard/modules/patient/PatientSidebarNavigation";
-import DeshboardLayout from "../../../../components/shared/DeshboardLayout/DeshboardLayout";
+import DeshboardLayout from "../../../../components/Deshboard/DeshboardLayout/DeshboardLayout";
 
 export default function DashboardMainLayout({ children }) {
 
