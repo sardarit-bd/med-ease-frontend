@@ -4,7 +4,7 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import useAuthStore from "../../../store/useAuthStore";
+import useAuthStore from "../../../../store/useAuthStore";
 import HeaderActionBtn from "../publicHeader/ActionBtnAndFromWrper";
 
 
@@ -39,7 +39,7 @@ export default function Header() {
             />
           </Link>
           <Link
-            href="#"
+            href="/"
             className="hidden md:inline text-[var(--text-dark)] font-medium hover:text-[var(--primary)] transition"
           >
             Patient
@@ -70,6 +70,10 @@ export default function Header() {
             About Us
           </Link>
 
+          <Link href="/philosophy" className="hover:text-[var(--primary)] transition">
+            Our Philosophy
+          </Link>
+
           <Link href="/contactus" className="hover:text-[var(--primary)] transition">
             Contact Us
           </Link>
@@ -88,7 +92,7 @@ export default function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          {menuOpen ? <X className="cursor-pointer" size={24} /> : <Menu size={24} />}
+          {menuOpen ? <X className="cursor-pointer" size={30} /> : <Menu size={30} />}
         </button>
       </div>
 
@@ -96,28 +100,41 @@ export default function Header() {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-[var(--light-background)] flex flex-col items-start px-6 py-4 space-y-3 shadow-md">
           <Link
-            href="#"
+            onClick={() => { setMenuOpen(!menuOpen) }}
+            href="/"
             className="text-[var(--text-dark)] font-medium hover:text-[var(--primary)]"
           >
-            Professionnel
+            Patient
           </Link>
 
           <details className="w-full">
-            <summary className="cursor-pointer flex items-center justify-between font-medium">
+            <summary className="cursor-pointer flex items-center justify-between font-medium py-2">
               Services <ChevronDown size={16} />
             </summary>
             <div className="flex flex-col pl-4 mt-2 space-y-1">
-              <Link href="#" className="text-sm hover:text-[var(--primary)]">
-                Service 1
-              </Link>
-              <Link href="#" className="text-sm hover:text-[var(--primary)]">
-                Service 2
-              </Link>
+              {
+                services?.map((item, index) => {
+                  return (
+                    <Link onClick={() => setMenuOpen(!menuOpen)} key={index} href={item?.link} className="py-2 text-sm hover:text-[var(--primary)]">
+                      {item.name}
+                    </Link>
+                  )
+                })
+              }
+
             </div>
           </details>
 
-          <Link href="#" className="font-medium hover:text-[var(--primary)]">
-            Votre santé
+          <Link onClick={() => setMenuOpen(!menuOpen)} href="/about" className="font-medium py-2 hover:text-[var(--primary)]">
+            About Us
+          </Link>
+
+          <Link onClick={() => setMenuOpen(!menuOpen)} href="/philosophy" className="font-medium py-2 hover:text-[var(--primary)]">
+            Our Philosophy
+          </Link>
+
+          <Link onClick={() => setMenuOpen(!menuOpen)} href="/contactus" className="font-medium hover:text-[var(--primary)]">
+            Contact Us
           </Link>
 
           <HeaderActionBtn />

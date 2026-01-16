@@ -1,7 +1,8 @@
 "use client";
 
-import ActionBtnAndFromWrper from "@/components/publicHeader/ActionBtnAndFromWrper";
+import ActionBtnAndFromWrper from "@/components/publicSite/publicHeader/ActionBtnAndFromWrper";
 import { ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import herodoctorthapistopok from "../../../../public/icons/herodoctorthapistopok.png";
 import patienthero from "../../../../public/images/patienthero.png";
@@ -21,7 +22,7 @@ export default function HeroSectionPatient() {
 
             <div className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-5 2xl:px-0 w-full">
                 {/* LEFT CONTENT */}
-                <div className="md:w-full flex flex-col items-center md:items-start justify-center space-y-4 text-[var(--text-dark)] py-10">
+                <motion.div animate={{ x: 0 }} initial={{ x: "-100%" }} className="md:w-full flex flex-col items-center md:items-start justify-center space-y-4 text-[var(--text-dark)] py-10">
                     <p className="text-xs text-[var(--primary)] font-medium px-5 flex items-center gap-2 py-2 mt-2 rounded-full bg-white font-semibold w-fit flex items-center gap-3">
                         <Image src={herodoctorthapistopok} alt="herodoctorthapistopok" />
                         <span className="text-xs md:text-md text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF]">Ne laissez plus l’incertitude guider votre santé !</span>
@@ -44,13 +45,13 @@ export default function HeroSectionPatient() {
 
                     <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF] text-2xl font-semibold mt-2">Votre Santé, notre Priorité</h2>
 
-                </div>
+                </motion.div>
 
                 {/* RIGHT SIDE IMAGES */}
-                <div className="hidden lg:block absolute bottom-0 right-0 translate-y-36">
+                <motion.div animate={{ y: 0 }} initial={{ y: "100%" }} className="hidden lg:block absolute bottom-0 right-0 translate-y-36">
                     <Image className="hidden xl:block absolute top-0 left-0 -translate-x-[300px]" src={"/icons/arrowshow.png"} alt="swipe_arrow" width={200} height={200} />
                     <Image src={patienthero} alt="patientheroImage" width={600} height={600} />
-                </div>
+                </motion.div>
             </div>
         </section>
     );

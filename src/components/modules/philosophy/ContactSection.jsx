@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function ContactSection() {
     return (
@@ -39,12 +40,12 @@ export default function ContactSection() {
                     <p className="text-gray-600 mb-6">
                         Pour Une Nouvelle Ère, La Santé De Demain. Construisons ensemble notre avenir pour conserver notre trésor le plus précieux, notre santé
                     </p>
-                    <a
-                        href="#"
+                    <Link
+                        href="/contactus"
                         className="inline-block px-6 py-3 rounded-full text-white font-medium bg-gradient-to-r from-[#3074B5] to-[#61D0BF] shadow-md hover:scale-105 transition-transform duration-300"
                     >
                         À votre écoute
-                    </a>
+                    </Link>
                 </div>
             </div>
             <Image

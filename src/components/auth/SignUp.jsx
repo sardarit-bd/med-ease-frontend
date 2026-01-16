@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import useAuthStore from "../../../store/useAuthStore";
+import SpinLoader from "../shared/SpinLoader";
 
 
 const SignUp = () => {
@@ -14,7 +15,7 @@ const SignUp = () => {
     const [showConfirm, setShowConfirm] = useState(false);
     const { register } = useAuth()
     const router = useRouter();
-    const { issignin, setissignin, issignup, setissignup, isforgot, setisforgot } = useAuthStore();
+    const { setisopenActionForm, issignin, setissignin, issignup, setissignup, isforgot, setisforgot, isLoading, setisLoading } = useAuthStore();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,7 +35,11 @@ const SignUp = () => {
             toast.error('Passwords do not match. Please try again.');
             return;
         }
+
+        setisLoading(true);
         const res = await register({ name, email, password });
+        setisLoading(false);
+        setisopenActionForm(false);
         if (res.success) {
             router.replace('/auth/signin')
             toast.success('Account created successfully! Please log in.');
@@ -43,6 +48,12 @@ const SignUp = () => {
             console.log(res.error);
         }
     };
+
+
+
+    if (isLoading) {
+        return <SpinLoader />;
+    }
 
 
     return (

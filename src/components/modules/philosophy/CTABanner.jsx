@@ -40,7 +40,7 @@ export default function CTABanner() {
                         Notre leitmotiv
                     </h2>
                     <p className="text-white text-center justify-center flex gap-2 items-center font-medium mt-2">
-                        Votre confort <div className="bg-[#61D0BF] rounded-full p-2 inline-block"><Image src='/philosophy/kitBox.png' width={25} height={25} /></div> Votre bien-être.
+                        Votre confort <div className="bg-[#61D0BF] rounded-full p-2 inline-block"><Image src='/philosophy/kitBox.png' width={25} height={25} alt="philosophykitbox" /></div> Votre bien-être.
                     </p>
                     <p className="text-white font-medium mt-2">
                         Notre engagement.

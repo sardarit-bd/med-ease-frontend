@@ -14,6 +14,10 @@ const useAuthStore = create((set) => ({
     isforgot: false,
     setisforgot: (forgot) => set({ isforgot: forgot }),
 
+
+    isLoading: false,
+    setisLoading: (loading) => set({ isLoading: loading }),
+
 }));
 
 export default useAuthStore;

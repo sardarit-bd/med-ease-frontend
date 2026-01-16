@@ -1,7 +1,8 @@
 'use client'
 
-import useAuthStore from "../../../store/useAuthStore";
-import AuthWraper from "../auth/AuthWraper";
+
+import useAuthStore from "../../../../store/useAuthStore";
+import AuthWraper from "../../auth/AuthWraper";
 import InscriptionForm from "./InscriptionForm";
 
 const ActionBtnAndFromWrper = ({ children }) => {

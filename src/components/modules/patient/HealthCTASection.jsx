@@ -1,6 +1,6 @@
 "use client";
 
-import ActionBtnAndFromWrper from "@/components/publicHeader/ActionBtnAndFromWrper";
+import ActionBtnAndFromWrper from "@/components/publicSite/publicHeader/ActionBtnAndFromWrper";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import useAuthStore from "../../../../store/useAuthStore";
