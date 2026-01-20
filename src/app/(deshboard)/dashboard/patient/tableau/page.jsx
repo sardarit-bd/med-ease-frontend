@@ -6,8 +6,12 @@ import RightColumn from "./RightColumn";
 import Summery from "./Summery";
 
 export default function DashboardPage() {
+
+
+
+
     return (
-        <div className="min-h-screen p-4 md:p-6">
+        <div className="min-h-screen">
 
             {/* HEADER GREETING */}
             <div className="w-full rounded-2xl p-6 md:p-8 text-white bg-gradient-to-r from-[#7A5CF4] via-[#C95BF4] to-[#4D9FF5] shadow-md">

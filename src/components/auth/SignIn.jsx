@@ -20,11 +20,15 @@ const SignIn = () => {
     const { setisopenActionForm, issignin, setissignin, issignup, setissignup, isforgot, setisforgot, isLoading, setisLoading } = useAuthStore();
 
     const { login, loading, error, sendPasswordResetLink } = useAuth();
+
+    
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
 
+
+    // handle login or handle submite function is here
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,17 +39,28 @@ const SignIn = () => {
         setisLoading(false);
         setisopenActionForm(false);
 
+        console.log(result);
+
+
         if (result.success) {
             router.replace('/dashboard/patient/tableau')
         }
     };
 
+
+
+
+
+
+    // hanlde chnage function
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
+
+
 
 
     if (isLoading) {

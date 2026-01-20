@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Med Ease",
-  description: "Take care your health",
+  title: "Med'ease pour les patients – Une prise en charge optimisée",
+  description: "Med'ease aide les patients et leurs proches à naviguer simplement dans le parcours de soins : informations centralisées, suivi en temps réel des rendez-vous, rappels personnalisés, et bien plus encore.",
 };
 
 export default function RootLayout({ children }) {

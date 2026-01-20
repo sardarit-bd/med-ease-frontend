@@ -75,7 +75,7 @@ export default function PilulierPage() {
     const totalDose = todayDoses?.morning?.length + todayDoses?.evening?.length + todayDoses?.noon?.length
     const progress = Math.ceil((taken / totalDose) * 100)
     return (
-        <div className="min-h-screen p-4 md:p-6">
+        <div className="min-h-screen">
 
             {/* PAGE TITLE */}
             <div className="flex justify-between items-start mb-6">

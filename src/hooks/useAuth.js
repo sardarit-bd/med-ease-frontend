@@ -50,7 +50,11 @@ export function useAuth() {
 
         try {
             const response = await api.loginUser(credentials);
-            const user = response.data?.user || response.user;
+
+
+            console.log(response);
+
+            const user = response;
 
             setState({
                 user,
@@ -148,6 +152,9 @@ export function useAuth() {
             return { success: false, error: error.message };
         }
     }, []);
+
+
+
 
     // Initialize
     useEffect(() => {
