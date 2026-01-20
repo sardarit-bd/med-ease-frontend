@@ -31,7 +31,7 @@ export default function PharmaciePage() {
 
 
     return (
-        <div className="min-h-screen p-4 md:p-6">
+        <div className="min-h-screen">
 
             {/* HEADER */}
             <div className="flex justify-between items-start mb-6">

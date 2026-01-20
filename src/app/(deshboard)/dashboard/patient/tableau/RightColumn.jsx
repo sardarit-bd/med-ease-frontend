@@ -14,6 +14,8 @@ export default function RightColumn() {
         loadSummary();
     }, []);
 
+
+
     return (
         <>
             {/* Pillulier Virtuel */}

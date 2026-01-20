@@ -1,13 +1,13 @@
 "use client"
 
 
-import PatientSidebarNavigation from "../../../../components/Deshboard/modules/patient/PatientSidebarNavigation";
 import DeshboardLayout from "../../../../components/Deshboard/DeshboardLayout/DeshboardLayout";
+import BedManagerSidebarNavigation from "../../../../components/Deshboard/modules/bedmanager/BedManagerSidebarNavigation";
 
 export default function DashboardMainLayout({ children }) {
 
 
     return (
-        <DeshboardLayout sidebar={<PatientSidebarNavigation />}>{children}</DeshboardLayout>
+        <DeshboardLayout sidebar={<BedManagerSidebarNavigation />}>{children}</DeshboardLayout>
     )
 }

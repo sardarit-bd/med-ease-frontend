@@ -30,7 +30,7 @@ function DashboardLayout({ header, sidebar, children }) {
 
             <div className="flex-1 flex flex-col overflow-hidden">
                 <DeshBordHeaderWrper sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-                <div className="p-0 pt-[78px]">
+                <div className="p-4 md:p-6 mt-[73px]">
                     {children}
                 </div>
             </div>
