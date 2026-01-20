@@ -54,9 +54,9 @@ const establishments = [
 
 const filtresresultats = () => {
     return (
-        <main className="min-h-screen bg-[#F5F7FB]">
+        <main className="min-h-screen bg-[#F5F7FB] shadow-sm rounded-md">
             {/* Top bar (optional) */}
-            <div className="border-b border-gray-200 bg-white px-4 py-3 md:px-6 lg:px-8">
+            <div className="border-b border-gray-200 bg-white rounded-t-md px-4 py-3 md:px-6 lg:px-8">
                 <h1 className="text-sm font-semibold text-gray-800 md:text-base">
                     Carte des établissements
                 </h1>

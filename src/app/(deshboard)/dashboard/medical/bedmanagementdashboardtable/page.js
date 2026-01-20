@@ -91,7 +91,7 @@ export default function BedManagementDashboard() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-2">
+        <div className="min-h-screen bg-gray-50">
             <div className="w-full">
                 {/* Header */}
                 <h1 className="text-2xl font-semibold text-gray-900 mb-6">Gestion des lits</h1>

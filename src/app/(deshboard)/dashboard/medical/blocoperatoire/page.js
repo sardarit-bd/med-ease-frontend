@@ -128,7 +128,7 @@ const rooms = [
 
 const BlocOperatoirePage = () => {
     return (
-        <main className="min-h-screen bg-[#F5F7FB] px-4 py-4 md:px-6 lg:px-8">
+        <main className="min-h-screen">
             <div className="">
                 {/* Header */}
                 <header className="mb-4">
