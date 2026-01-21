@@ -75,7 +75,7 @@ export default function ProfessionalDashboard() {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 p-3">
+        <div className="min-h-screen bg-gray-50">
             <div className="w-full">
                 {/* Header */}
                 <div className="mb-6">

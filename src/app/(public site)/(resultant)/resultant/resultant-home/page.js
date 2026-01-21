@@ -3,7 +3,7 @@ import TopBarSection from "@/components/modules/inscription/TopBarSection";
 import FiltersPills from "@/components/modules/resultant-home/FiltersPills";
 import SearchResults from "@/components/modules/resultant-home/SearchResults";
 import Header from "@/components/publicSite/publicHeader/Header";
-import MedicalSearchHeader from "../../../../components/modules/resultant-home/MedicalSearchHeader";
+import MedicalSearchHeader from "../../../../../components/modules/resultant-home/MedicalSearchHeader";
 
 const Tematique = () => {
     return (

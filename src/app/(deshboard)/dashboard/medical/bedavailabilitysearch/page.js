@@ -64,7 +64,7 @@ export default function BedAvailabilitySearch() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
-            <div className="bg-white text-gray-900 px-4 py-6">
+            <div className="bg-white text-gray-900 px-4 py-6 rounded-lg border border-gray-200">
                 <div className="w-full">
                     <h1 className="text-2xl font-semibold mb-6">Recherche de lits disponibles</h1>
 
@@ -113,7 +113,7 @@ export default function BedAvailabilitySearch() {
             </div>
 
             {/* Results */}
-            <div className="w-full px-4 py-6">
+            <div className="w-full py-6">
                 {/* Results Header */}
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
                     <div className="text-gray-700">

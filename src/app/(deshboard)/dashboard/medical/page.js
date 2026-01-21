@@ -21,7 +21,7 @@ export default function Dashboard() {
 
 
     return (
-        <div className="w-full bg-[#f7fbfc] min-h-screen p-4">
+        <div className="w-full bg-[#f7fbfc] min-h-screen">
             <h1 className="text-xl font-semibold text-[var(--textDark)] mb-2">
                 Tableau de bord Établissement
             </h1>

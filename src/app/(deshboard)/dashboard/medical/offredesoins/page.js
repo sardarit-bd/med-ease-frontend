@@ -134,7 +134,7 @@ const typeBadgeClasses = {
 
 const offredesoins = () => {
     return (
-        <main className="min-h-screen bg-[#F5F7FB] px-4 py-4 md:px-6 lg:px-8">
+        <main className="min-h-screen bg-[#F5F7FB]">
             <div className="mx-auto">
 
                 {/* Top search bar */}

@@ -112,7 +112,7 @@ export default function TimelinePage() {
         <div className="w-full min-h-screen bg-gray-50 px-6 md:px-10 py-16 flex flex-col items-center">
 
             {/* HEADER */}
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 pt-[78px]">
                 <h2 className="text-3xl md:text-5xl font-bold text-gray-800">Les Origines…</h2>
                 <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF] font-bold text-3xl md:text-5xl">La chronologie</h2>
             </div>

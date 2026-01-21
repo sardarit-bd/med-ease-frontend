@@ -3,26 +3,56 @@
 import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import useAuthStore from "../../../../store/useAuthStore";
 import HeaderActionBtn from "../publicHeader/ActionBtnAndFromWrper";
 
 
-const services = [
+const servicesforPatient = [
   { name: "Offre de soins", link: "/services/offre-de-soins" },
   { name: "Maps de Santé", link: "/services/cartographie" },
   { name: "Symptom Checker", link: "/services/lits-d-aval" },
-  { name: "Transports Sanitaires", link: "/services/sas" },
+  { name: "Transports Sanitaires", link: "/transport" },
   { name: "Lits d'hospitalisation", link: "/services/rh" },
   { name: "Télémedecine", link: "/services/telemedecine" },
-  { name: "Conciergerie Médicale", link: "/services/conciergerie-medicale" },
+  { name: "Conciergerie Médicale", link: "/medicalconcierge" },
 ];
+
+
+const servicesforProfessional = [
+  { name: "Offre de soins", link: "/services/offre-de-soins" },
+  { name: "Cartographie", link: "/services/cartographie" },
+  { name: "Lits d’aval", link: "/services/lits-d-aval" },
+  { name: "SAS", link: "/services/sas" },
+  { name: "Transports Sanitaires", link: "/transport" },
+  { name: "RH", link: "/services/telemedecine" },
+  { name: "Télémédecine", link: "/services/conciergerie-medicale" },
+  { name: "Pharma", link: "/services/rh" },
+  { name: "Studio", link: "/services/telemedecine" },
+  { name: "Conciergerie Médicale", link: "/medicalconcierge" },
+];
+
+
+
+
 
 
 export default function Header() {
 
+
+  const pathName = usePathname();
+
+
   const [menuOpen, setMenuOpen] = useState(false);
   const { setisopenActionForm } = useAuthStore();
+
+
+
+  // services dropdown fitting logic
+  const services = pathName === "/" ? servicesforPatient : pathName === "/professional" ? servicesforProfessional : pathName === "/medicalconcierge" ? servicesforProfessional : servicesforPatient;
+
+
 
   return (
     <header className="w-full bg-white fixed top-0 left-0 z-50 border-b border-[var(--light-background)]">
@@ -38,12 +68,30 @@ export default function Header() {
               className="object-contain"
             />
           </Link>
-          <Link
-            href="/"
-            className="hidden md:inline text-[var(--text-dark)] font-medium hover:text-[var(--primary)] transition"
-          >
-            Patient
-          </Link>
+          <div className="flex items-center gap-5 ml-6">
+
+            {
+              pathName == "/" || pathName == "/medicalconcierge" ? (
+                <Link
+                  href="/professional"
+                  className="hidden md:inline text-[var(--text-dark)] font-medium hover:text-[var(--primary)] transition"
+                >
+                  Professional
+                </Link>
+              ) : (
+                <Link
+                  href="/"
+                  className="hidden md:inline text-[var(--text-dark)] font-medium hover:text-[var(--primary)] transition"
+                >
+                  Patient
+                </Link>
+              )
+            }
+
+
+
+
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -72,6 +120,10 @@ export default function Header() {
 
           <Link href="/philosophy" className="hover:text-[var(--primary)] transition">
             Our Philosophy
+          </Link>
+
+          <Link href="/chronologie" className="hover:text-[var(--primary)] transition">
+            Origins
           </Link>
 
           <Link href="/contactus" className="hover:text-[var(--primary)] transition">

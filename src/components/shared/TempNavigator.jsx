@@ -77,7 +77,7 @@ const TempNavigator = () => {
         },
         {
             name: "Patient Dashboard",
-            link: '/patient-dashboard/tableau'
+            link: '/dashboard/patient/tableau'
         },
         {
             name: "Dashboard Admin",

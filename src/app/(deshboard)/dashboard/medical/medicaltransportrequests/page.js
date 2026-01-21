@@ -65,7 +65,7 @@ export default function TransportRequests() {
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
-            <div className="px-3">
+            <div className="pb-4">
                 <div className="w-full">
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                         <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
@@ -78,7 +78,7 @@ export default function TransportRequests() {
                 </div>
             </div>
 
-            <div className="w-full p-3">
+            <div className="w-full">
                 {/* Tabs and Filter */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6 bg-white px-3 py-3 rounded-md border-gray-200 border shadow-xs">
                     <div className="flex gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 items-center scrollbar-hide">
