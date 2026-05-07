@@ -2,24 +2,13 @@
 
 import SpinLoader from "@/components/shared/SpinLoader";
 import { useAuth } from "@/hooks";
+import { signInSchema } from "@/validations/authValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import useAuthStore from "../../../store/useAuthStore";
-
-const schema = yup.object({
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
 
 const SignIn = () => {
   const router = useRouter();
@@ -49,7 +38,7 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signInSchema),
   });
 
   const onSubmit = async (data) => {
