@@ -8,217 +8,222 @@ import { useState } from "react";
 import useAuthStore from "../../../store/useAuthStore";
 
 const SignIn = () => {
+  const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSuccess, setForgotSuccess] = useState("");
+  const [forgotError, setForgotError] = useState("");
 
-    const router = useRouter();
-    const [showPassword, setShowPassword] = useState(false);
-    const [showForgotModal, setShowForgotModal] = useState(false);
-    const [forgotEmail, setForgotEmail] = useState('');
-    const [forgotLoading, setForgotLoading] = useState(false);
-    const [forgotSuccess, setForgotSuccess] = useState('');
-    const [forgotError, setForgotError] = useState('');
+  const {
+    setisopenActionForm,
+    issignin,
+    setissignin,
+    issignup,
+    setissignup,
+    isforgot,
+    setisforgot,
+    isLoading,
+    setisLoading,
+  } = useAuthStore();
 
-    const { setisopenActionForm, issignin, setissignin, issignup, setissignup, isforgot, setisforgot, isLoading, setisLoading } = useAuthStore();
+  const { login, loading, error, sendPasswordResetLink } = useAuth();
 
-    const { login, loading, error, sendPasswordResetLink } = useAuth();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-    
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    setisLoading(true);
 
-    // handle login or handle submite function is here
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const result = await login(formData);
 
-        setisLoading(true);
+    setisLoading(false);
+    setisopenActionForm(false);
 
-        const result = await login(formData);
+    console.log(result);
 
-        setisLoading(false);
-        setisopenActionForm(false);
-
-        console.log(result);
-
-
-        if (result.success) {
-            router.replace('/dashboard/patient/tableau')
-        }
-    };
-
-
-
-
-
-
-    // hanlde chnage function
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-
-
-
-    if (isLoading) {
-        return <SpinLoader />;
+    if (result.success) {
+      router.replace("/dashboard/patient/tableau");
     }
+  };
 
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-    return (
-        <>
-            {showForgotModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
-                    <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl relative">
-                        {/* Close */}
-                        <button
-                            onClick={() => {
-                                setShowForgotModal(false);
-                                setForgotSuccess('');
-                                setForgotError('');
-                            }}
-                            className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
-                        >
-                            ✕
-                        </button>
+  if (isLoading) {
+    return <SpinLoader />;
+  }
 
-                        <h2 className="text-xl font-semibold text-center text-[var(--brandColor,#3074B5)]">
-                            Forgot Password
-                        </h2>
+  return (
+    <>
+      {showForgotModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl relative">
+            {/* Close */}
+            <button
+              onClick={() => {
+                setShowForgotModal(false);
+                setForgotSuccess("");
+                setForgotError("");
+              }}
+              className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
 
-                        <p className="text-sm text-gray-500 text-center mt-1">
-                            Enter your email to receive a password reset link
-                        </p>
+            <h2 className="text-xl font-semibold text-center text-[var(--brandColor,#3074B5)]">
+              Forgot Password
+            </h2>
 
-                        {forgotSuccess ? (
-                            <div className="mt-6 text-center text-green-600 font-medium">
-                                {forgotSuccess}
-                            </div>
-                        ) : (
-                            <form
-                                className="mt-6 space-y-4"
-                                onSubmit={async (e) => {
-                                    e.preventDefault();
-                                    setForgotLoading(true);
-                                    setForgotError('');
+            <p className="text-sm text-gray-500 text-center mt-1">
+              Enter your email to receive a password reset link
+            </p>
 
-                                    const res = await sendPasswordResetLink(forgotEmail);
-                                    if (res.success) {
-                                        setForgotSuccess('Password reset link sent! Please check your email.');
-                                    } else {
-                                        setForgotError(res.error || 'Failed to send reset link. Please try again.');
-                                    }
-                                }}
-                            >
-                                <input
-                                    type="email"
-                                    required
-                                    value={forgotEmail}
-                                    onChange={(e) => setForgotEmail(e.target.value)}
-                                    placeholder="Enter your email"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)] outline-none"
-                                />
+            {forgotSuccess ? (
+              <div className="mt-6 text-center text-green-600 font-medium">
+                {forgotSuccess}
+              </div>
+            ) : (
+              <form
+                className="mt-6 space-y-4"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setForgotLoading(true);
+                  setForgotError("");
 
-                                {forgotError && (
-                                    <p className="text-sm text-red-500">{forgotError}</p>
-                                )}
+                  const res = await sendPasswordResetLink(forgotEmail);
+                  if (res.success) {
+                    setForgotSuccess(
+                      "Password reset link sent! Please check your email.",
+                    );
+                  } else {
+                    setForgotError(
+                      res.error ||
+                        "Failed to send reset link. Please try again.",
+                    );
+                  }
+                }}
+              >
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)] outline-none"
+                />
 
-                                <button
-                                    type="submit"
-                                    disabled={forgotLoading}
-                                    className="w-full bg-[var(--brandColor,#3074B5)] text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
-                                >
-                                    {forgotLoading && <SpinLoader />}
-                                    Send Reset Link
-                                </button>
-                            </form>
-                        )}
-                    </div>
-                </div>
+                {forgotError && (
+                  <p className="text-sm text-red-500">{forgotError}</p>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="w-full bg-[var(--brandColor,#3074B5)] text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
+                >
+                  {forgotLoading && <SpinLoader />}
+                  Send Reset Link
+                </button>
+              </form>
             )}
+          </div>
+        </div>
+      )}
 
-            <section className="">
-                <div className="p-8">
-
-                    {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        <div className="relative">
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                onChange={handleChange}
-                                required
-                                placeholder=" "
-                                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
-                            />
-                            <label
-                                htmlFor="email"
-                                className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
+      <section className="">
+        <div className="p-8">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                onChange={handleChange}
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
+              />
+              <label
+                htmlFor="email"
+                className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
                             peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[var(--brandColor,#3074B5)] peer-focus:bg-white peer-focus:px-1
-                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1">
-                                Email
-                            </label>
-                        </div>
+                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1"
+              >
+                Email
+              </label>
+            </div>
 
-                        <div className="relative">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                onChange={handleChange}
-                                id="password"
-                                name="password"
-                                required
-                                placeholder=" "
-                                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
-                            />
-                            <label
-                                htmlFor="password"
-                                className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                onChange={handleChange}
+                id="password"
+                name="password"
+                required
+                placeholder=" "
+                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
+              />
+              <label
+                htmlFor="password"
+                className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
                             peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[var(--brandColor,#3074B5)] peer-focus:bg-white peer-focus:px-1
-                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1">
-                                Password
-                            </label>
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                            >
-                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                            </button>
-                        </div>
+                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1"
+              >
+                Password
+              </label>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
 
-                        <button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
-                        >
-                            Sign In
-                        </button>
-                    </form>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
+            >
+              Sign In
+            </button>
+          </form>
 
-                    {/* Footer */}
-                    <p className="text-center text-gray-500 text-sm mt-6">
-                        Don’t have an account?{" "}
-                        <button onClick={() => { setissignup(true), setissignin(false) }} className="text-[var(--brandColor,#3074B5)] font-medium hover:underline cursor-pointer">
-                            Sign up
-                        </button>
-                    </p>
-                    <div className="flex justify-center mt-2 text-sm text-gray-600">
-                        <button
-                            type="button"
-                            onClick={() => setShowForgotModal(true)}
-                            className="text-[var(--brandColor,#3074B5)] hover:underline cursor-pointer"
-                        >
-                            Forgot password?
-                        </button>
-
-                    </div>
-                </div>
-            </section>
-        </>
-    )
-}
+          {/* Footer */}
+          <p className="text-center text-gray-500 text-sm mt-6">
+            Don’t have an account?{" "}
+            <button
+              onClick={() => {
+                (setissignup(true), setissignin(false));
+              }}
+              className="text-[var(--brandColor,#3074B5)] font-medium hover:underline cursor-pointer"
+            >
+              Sign up
+            </button>
+          </p>
+          <div className="flex justify-center mt-2 text-sm text-gray-600">
+            <button
+              type="button"
+              onClick={() => setShowForgotModal(true)}
+              className="text-[var(--brandColor,#3074B5)] hover:underline cursor-pointer"
+            >
+              Forgot password?
+            </button>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
 
 export default SignIn;
