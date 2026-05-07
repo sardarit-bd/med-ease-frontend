@@ -2,10 +2,24 @@
 
 import SpinLoader from "@/components/shared/SpinLoader";
 import { useAuth } from "@/hooks";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import useAuthStore from "../../../store/useAuthStore";
+
+const schema = yup.object({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 const SignIn = () => {
   const router = useRouter();
@@ -30,33 +44,23 @@ const SignIn = () => {
 
   const { login, loading, error, sendPasswordResetLink } = useAuth();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     setisLoading(true);
-
-    const result = await login(formData);
-
+    const result = await login(data);
     setisLoading(false);
     setisopenActionForm(false);
-
     console.log(result);
-
     if (result.success) {
       router.replace("/dashboard/patient/tableau");
     }
-  };
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   if (isLoading) {
@@ -68,7 +72,6 @@ const SignIn = () => {
       {showForgotModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
           <div className="w-full max-w-md bg-white rounded-2xl p-6 shadow-xl relative">
-            {/* Close */}
             <button
               onClick={() => {
                 setShowForgotModal(false);
@@ -142,16 +145,13 @@ const SignIn = () => {
 
       <section className="">
         <div className="p-8">
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="relative">
               <input
                 type="email"
                 id="email"
-                name="email"
-                onChange={handleChange}
-                required
                 placeholder=" "
+                {...register("email")}
                 className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
               />
               <label
@@ -162,16 +162,19 @@ const SignIn = () => {
               >
                 Email
               </label>
+              {errors.email && (
+                <p className="text-sm! w-full text-left text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                onChange={handleChange}
                 id="password"
-                name="password"
-                required
                 placeholder=" "
+                {...register("password")}
                 className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
               />
               <label
@@ -189,19 +192,23 @@ const SignIn = () => {
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
+              {errors.password && (
+                <p className="text-sm! w-full text-left text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
+              className="w-full bg-linear-to-r from-(--primary) to-(--secondary) text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
             >
               Sign In
             </button>
           </form>
 
-          {/* Footer */}
           <p className="text-center text-gray-500 text-sm mt-6">
-            Don’t have an account?{" "}
+            Don't have an account?{" "}
             <button
               onClick={() => {
                 (setissignup(true), setissignin(false));
