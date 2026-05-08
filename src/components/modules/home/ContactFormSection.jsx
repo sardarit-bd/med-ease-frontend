@@ -4,21 +4,12 @@ import Image from "next/image";
 import { useState } from "react";
 import Vector_Plus from "../../../../public/icons/Vector_Plus.png";
 
-
 export default function ContactFormSection() {
-
-
-
   const [isLoading, setIsLoading] = useState(false);
-
-
-
 
   return (
     <section className="relative py-20 bg-[#61D0BF0F] overflow-hidden">
-
       <div className="max-w-7xl mx-auto px-5 2xl:px-0">
-
         {/* Title */}
         <h2 className="text-center text-2xl md:text-3xl font-semibold text-gray-900 mb-10">
           Prêt à être Accompagné(e)?{" "}
@@ -27,22 +18,23 @@ export default function ContactFormSection() {
           </span>
         </h2>
 
-
         <div className="flex items-center justify-between gap-1 px-0 md:px-5">
-
-
           <div className="hidden md:flex items-center gap-8 flex-col">
             <span className="pl-20">
-              <Image className="w-12 h-auto" src={Vector_Plus} alt="Vector_Plus" />
+              <Image
+                className="w-12 h-auto"
+                src={Vector_Plus}
+                alt="Vector_Plus"
+              />
             </span>
             <span className=" ">
-              <Image className="w-20 h-auto" src={Vector_Plus} alt="Vector_Plus" />
+              <Image
+                className="w-20 h-auto"
+                src={Vector_Plus}
+                alt="Vector_Plus"
+              />
             </span>
           </div>
-
-
-
-
 
           {/* Form Container */}
           <div className="w-full md:max-w-lg w-full mx-auto bg-white rounded-lg p-8 customboxshadow">
@@ -67,9 +59,7 @@ export default function ContactFormSection() {
                 placeholder="Téléphone"
                 className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
               />
-              <select
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
-              >
+              <select className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700">
                 <option>Besoin principal</option>
                 <option>Orientation médicale</option>
                 <option>Transport médical</option>
@@ -92,24 +82,24 @@ export default function ContactFormSection() {
             </form>
           </div>
 
-
-
-
           <div className="hidden md:flex items-center gap-8 flex-col">
             <span className="pr-20">
-              <Image className="w-12 h-auto" src={Vector_Plus} alt="Vector_Plus" />
+              <Image
+                className="w-12 h-auto"
+                src={Vector_Plus}
+                alt="Vector_Plus"
+              />
             </span>
             <span className="">
-              <Image className="w-20 h-auto" src={Vector_Plus} alt="Vector_Plus" />
+              <Image
+                className="w-20 h-auto"
+                src={Vector_Plus}
+                alt="Vector_Plus"
+              />
             </span>
           </div>
-
-
         </div>
-
       </div>
-
-
     </section>
   );
 }

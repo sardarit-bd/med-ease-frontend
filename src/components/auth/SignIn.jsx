@@ -1,14 +1,19 @@
 "use client";
 
 import SpinLoader from "@/components/shared/SpinLoader";
-import { useAuth } from "@/hooks";
+import { useLoginMutation } from "@/state/api/authApi";
+import {
+  setisforgot,
+  setissignin,
+  setissignup,
+} from "@/state/slices/AuthSlice";
 import { signInSchema } from "@/validations/authValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuthStore from "../../../store/useAuthStore";
+import { useDispatch, useSelector } from "react-redux";
 
 const SignIn = () => {
   const router = useRouter();
@@ -18,43 +23,44 @@ const SignIn = () => {
   const [forgotLoading, setForgotLoading] = useState(false);
   const [forgotSuccess, setForgotSuccess] = useState("");
   const [forgotError, setForgotError] = useState("");
-
-  const {
-    setisopenActionForm,
-    issignin,
-    setissignin,
-    issignup,
-    setissignup,
-    isforgot,
-    setisforgot,
-    isLoading,
-    setisLoading,
-  } = useAuthStore();
-
-  const { login, loading, error, sendPasswordResetLink } = useAuth();
-
+  const { issignup } = useSelector((state) => state.Auth);
+  const dispatch = useDispatch();
+  const [login, { isLoading: loading, error, data }] = useLoginMutation();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signInSchema),
   });
+  const onSubmit = async (formData) => {
+    try {
+      const result = await login(formData).unwrap();
+      if (result.success) {
+        router.replace("/dashboard/patient/tableau");
+        dispatch(issignup(false));
+      }
+    } catch (err) {
+      console.log(err);
 
-  const onSubmit = async (data) => {
-    setisLoading(true);
-    const result = await login(data);
-    setisLoading(false);
-    setisopenActionForm(false);
-    console.log(result);
-    if (result.success) {
-      router.replace("/dashboard/patient/tableau");
+      const backendErrors = err?.data?.errors;
+
+      if (backendErrors) {
+        Object.keys(backendErrors).forEach((field) => {
+          setError(field, {
+            type: "server",
+            message: backendErrors[field][0],
+          });
+        });
+      } else {
+        setError("root", {
+          type: "server",
+          message: err?.data?.message || "Login failed",
+        });
+      }
     }
   };
-
-  if (isLoading) {
-    return <SpinLoader />;
-  }
 
   return (
     <>
@@ -72,7 +78,7 @@ const SignIn = () => {
               ✕
             </button>
 
-            <h2 className="text-xl font-semibold text-center text-[var(--brandColor,#3074B5)]">
+            <h2 className="text-xl font-semibold text-center text-(--brandColor,#3074B5)">
               Forgot Password
             </h2>
 
@@ -111,7 +117,7 @@ const SignIn = () => {
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)] outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-(--brandBg,#61D0BF) outline-none"
                 />
 
                 {forgotError && (
@@ -121,7 +127,7 @@ const SignIn = () => {
                 <button
                   type="submit"
                   disabled={forgotLoading}
-                  className="w-full bg-[var(--brandColor,#3074B5)] text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
+                  className="w-full bg-(--brandColor,#3074B5) text-white py-3 rounded-lg font-semibold flex justify-center items-center gap-2"
                 >
                   {forgotLoading && <SpinLoader />}
                   Send Reset Link
@@ -141,13 +147,13 @@ const SignIn = () => {
                 id="email"
                 placeholder=" "
                 {...register("email")}
-                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
+                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--brandBg,#61D0BF) text-black"
               />
               <label
                 htmlFor="email"
                 className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
-                            peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[var(--brandColor,#3074B5)] peer-focus:bg-white peer-focus:px-1
-                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1"
+                            peer-focus:-top-3 peer-focus:text-sm peer-focus:text-(--brandColor,#3074B5) peer-focus:bg-white peer-focus:px-1
+                            peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-(--brandColor,#3074B5)  peer-not-placeholder-shown:bg-white peer-not-placeholder-shown:px-1"
               >
                 Email
               </label>
@@ -164,13 +170,13 @@ const SignIn = () => {
                 id="password"
                 placeholder=" "
                 {...register("password")}
-                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--brandBg,#61D0BF)]"
+                className="peer w-full px-4 pt-3 pb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-(--brandBg,#61D0BF) text-black"
               />
               <label
                 htmlFor="password"
                 className="absolute left-4 top-2.5 text-gray-500 text-base transition-all
-                            peer-focus:-top-3 peer-focus:text-sm peer-focus:text-[var(--brandColor,#3074B5)] peer-focus:bg-white peer-focus:px-1
-                            peer-[&:not(:placeholder-shown)]:-top-3 peer-[&:not(:placeholder-shown)]:text-sm peer-[&:not(:placeholder-shown)]:text-[var(--brandColor,#3074B5)]  peer-[&:not(:placeholder-shown)]:bg-white peer-[&:not(:placeholder-shown)]:px-1"
+                            peer-focus:-top-3 peer-focus:text-sm peer-focus:text-(--brandColor,#3074B5) peer-focus:bg-white peer-focus:px-1
+                            peer-not-placeholder-shown:-top-3 peer-not-placeholder-shown:text-sm peer-not-placeholder-shown:text-(--brandColor,#3074B5) peer-not-placeholder-shown:bg-white"
               >
                 Password
               </label>
@@ -190,19 +196,26 @@ const SignIn = () => {
 
             <button
               type="submit"
+              disabled={loading}
               className="w-full bg-linear-to-r from-(--primary) to-(--secondary) text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
             >
-              Sign In
+              {loading ? (
+                <div className="w-5 h-5 rounded-full border-b-3 border-l-3 border-gray-50 animate-spin"></div>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
 
           <p className="text-center text-gray-500 text-sm mt-6">
-            Don't have an account?{" "}
+            Don't have an account?
             <button
               onClick={() => {
-                (setissignup(true), setissignin(false));
+                dispatch(setissignup(true));
+                dispatch(setissignin(false));
+                dispatch(setisforgot(false));
               }}
-              className="text-[var(--brandColor,#3074B5)] font-medium hover:underline cursor-pointer"
+              className="text-(--brandColor,#3074B5) font-medium hover:underline cursor-pointer"
             >
               Sign up
             </button>
@@ -210,8 +223,12 @@ const SignIn = () => {
           <div className="flex justify-center mt-2 text-sm text-gray-600">
             <button
               type="button"
-              onClick={() => setShowForgotModal(true)}
-              className="text-[var(--brandColor,#3074B5)] hover:underline cursor-pointer"
+              onClick={() => {
+                dispatch(setisforgot(true));
+                dispatch(setissignin(false));
+                dispatch(setissignup(false));
+              }}
+              className="text-(--brandColor,#3074B5) hover:underline cursor-pointer"
             >
               Forgot password?
             </button>
