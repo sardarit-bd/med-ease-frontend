@@ -34,8 +34,10 @@ const SignUp = () => {
     try {
       const res = await registeration({ ...formData, role: userRole }).unwrap();
 
-      if (res.success) {
+      if (isSuccess || res.status) {
         toast.success("Account created successfully! Please log in.");
+        dispatch(setissignin());
+        dispatch(setissignup());
       }
     } catch (err) {
       const backendErrors = err?.data?.message;
@@ -208,10 +210,10 @@ const SignUp = () => {
 
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isLoading}
             className="w-full bg-linear-to-r from-(--primary) to-(--secondary) text-white font-semibold py-3 rounded-lg shadow-md transition-all cursor-pointer flex items-center justify-center gap-3"
           >
-            {isSubmitting ? (
+            {isLoading ? (
               <div className="w-5 h-5 rounded-full border-b-3 border-l-3 border-gray-50 animate-spin"></div>
             ) : (
               "Create Account"

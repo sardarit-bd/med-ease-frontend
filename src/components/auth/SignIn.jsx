@@ -25,7 +25,7 @@ const SignIn = () => {
   const [forgotError, setForgotError] = useState("");
   const { issignup } = useSelector((state) => state.Auth);
   const dispatch = useDispatch();
-  const [login, { isLoading: loading, error, data }] = useLoginMutation();
+  const [login, { isLoading: loading, error, isSuccess }] = useLoginMutation();
   const {
     register,
     handleSubmit,
@@ -34,16 +34,20 @@ const SignIn = () => {
   } = useForm({
     resolver: yupResolver(signInSchema),
   });
+
   const onSubmit = async (formData) => {
     try {
       const result = await login(formData).unwrap();
-      if (result.success) {
-        router.replace("/dashboard/patient/tableau");
-        dispatch(issignup(false));
+      console.log(result?.data?.user?.role);
+      if (isSuccess || result.status) {
+        if (result?.data?.user?.role === "patient") {
+          router.replace("/dashboard/patient/tableau");
+        } else {
+          router.replace("");
+        }
+        dispatch(issignup());
       }
     } catch (err) {
-      console.log(err);
-
       const backendErrors = err?.data?.errors;
 
       if (backendErrors) {
