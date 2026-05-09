@@ -1,7 +1,10 @@
 import TempNavigator from "@/components/shared/TempNavigator";
+import ReduxProvider from "@/state/provider";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
+import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -14,7 +17,8 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Med'ease pour les patients – Une prise en charge optimisée",
-  description: "Med'ease aide les patients et leurs proches à naviguer simplement dans le parcours de soins : informations centralisées, suivi en temps réel des rendez-vous, rappels personnalisés, et bien plus encore.",
+  description:
+    "Med'ease aide les patients et leurs proches à naviguer simplement dans le parcours de soins : informations centralisées, suivi en temps réel des rendez-vous, rappels personnalisés, et bien plus encore.",
 };
 
 export default function RootLayout({ children }) {
@@ -23,9 +27,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-
-        <TempNavigator />
+        <ReduxProvider>
+          {children}
+          <TempNavigator />
+          <ToastContainer position="top-right" />
+        </ReduxProvider>
       </body>
     </html>
   );
