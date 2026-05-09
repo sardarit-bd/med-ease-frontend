@@ -1,7 +1,11 @@
 "use client";
 
 import { useLoginMutation } from "@/state/api/authApi";
-import { setisforgot, setissignup } from "@/state/slices/AuthSlice";
+import {
+  setisforgot,
+  setissignin,
+  setissignup,
+} from "@/state/slices/AuthSlice";
 import { signInSchema } from "@/validations/authValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
@@ -33,6 +37,8 @@ const SignIn = () => {
       if (isSuccess || result.status) {
         if (result?.data?.user?.role === "patient") {
           router.replace("/dashboard/patient/tableau");
+          dispatch(setissignup(false));
+          dispatch(setissignin(false));
         } else {
           router.replace("");
         }

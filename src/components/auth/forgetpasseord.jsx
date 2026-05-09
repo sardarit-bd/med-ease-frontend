@@ -13,7 +13,7 @@ export default function ForgotPassword() {
   const [forgotError, setForgotError] = useState("");
   const [forgotPassword, { isLoading: forgotLoading }] =
     useVerifyEmailMutation();
-
+  // check
   const {
     register,
     handleSubmit,
