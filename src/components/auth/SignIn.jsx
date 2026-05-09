@@ -1,11 +1,7 @@
 "use client";
 
 import { useLoginMutation } from "@/state/api/authApi";
-import {
-  setisforgot,
-  setissignin,
-  setissignup,
-} from "@/state/slices/AuthSlice";
+import { setisforgot, setissignup } from "@/state/slices/AuthSlice";
 import { signInSchema } from "@/validations/authValidationSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Eye, EyeOff } from "lucide-react";
@@ -109,7 +105,7 @@ const SignIn = () => {
                 type="button"
                 onClick={() => {
                   console.log("clicked");
-                  dispatch(setissignin(false));
+                  setShowPassword(!showPassword);
                 }}
                 className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
               >
