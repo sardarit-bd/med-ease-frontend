@@ -225,8 +225,7 @@ const SignUp = () => {
           Already have an account?
           <button
             onClick={() => {
-              dispatch(setissignin());
-              dispatch(setissignup());
+              dispatch(setissignin(true));
             }}
             className="text-(--brandColor,#3074B5) font-medium hover:underline cursor-pointer"
           >

@@ -1,11 +1,13 @@
 "use client";
 
+import Button from "@/utils/Button";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import useAuthStore from "../../../../store/useAuthStore";
+import { useDispatch } from "react-redux";
+import { setissignin } from "../../../state/slices/AuthSlice";
 import HeaderActionBtn from "../publicHeader/ActionBtnAndFromWrper";
 const servicesforPatient = [
   { name: "Offre de soins", link: "/services/offre-de-soins" },
@@ -33,8 +35,8 @@ const servicesforProfessional = [
 export default function Header() {
   const pathName = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { setisopenActionForm } = useAuthStore();
-
+  // const { setisopenActionForm } = useAuthStore();
+  const dispatch = useDispatch();
   const services =
     pathName === "/"
       ? servicesforPatient
@@ -47,7 +49,6 @@ export default function Header() {
   return (
     <header className="w-full bg-white fixed top-0 left-0 z-50 border-b border-(--light-background)">
       <div className="max-w-7xl px-5 2xl:px-0 mx-auto flex items-center justify-between py-3">
-        {/* Logo + Left side */}
         <div className="flex items-center gap-2">
           <Link href={"/"}>
             <Image
@@ -77,13 +78,12 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8 text-(--text-dark) font-medium">
           <div className="relative group cursor-pointer">
             <div className="flex items-center gap-1">
               Services <ChevronDown size={16} />
             </div>
-            {/* Dropdown */}
+
             <div className="absolute hidden group-hover:flex flex-col bg-white border border-gray-100 rounded-md shadow-md mt-0 w-[220px] py-4">
               {services?.map((item, index) => {
                 return (
@@ -122,14 +122,14 @@ export default function Header() {
           </Link>
 
           <HeaderActionBtn>
-            <button
+            <Button
               onClick={() => {
-                setisopenActionForm(true);
+                dispatch(setissignin(true));
+                // setisopenActionForm(true);
               }}
-              className="px-5 py-2.5 rounded-full bg-(--primary) to-(--secondary) text-white font-semibold hover:opacity-90 transition cursor-pointer"
             >
               J'agis
-            </button>
+            </Button>
           </HeaderActionBtn>
         </nav>
 
@@ -153,7 +153,7 @@ export default function Header() {
               setMenuOpen(!menuOpen);
             }}
             href="/"
-            className="text-[var(--text-dark)] font-medium hover:text-[var(--primary)]"
+            className="text-(--text-dark) font-medium hover:text-(--primary)"
           >
             Patient
           </Link>
@@ -169,7 +169,7 @@ export default function Header() {
                     onClick={() => setMenuOpen(!menuOpen)}
                     key={index}
                     href={item?.link}
-                    className="py-2 text-sm hover:text-[var(--primary)]"
+                    className="py-2 text-sm hover:text-(--primary)"
                   >
                     {item.name}
                   </Link>
@@ -181,7 +181,7 @@ export default function Header() {
           <Link
             onClick={() => setMenuOpen(!menuOpen)}
             href="/about"
-            className="font-medium py-2 hover:text-[var(--primary)]"
+            className="font-medium py-2 hover:text-(--primary)"
           >
             About Us
           </Link>
@@ -189,7 +189,7 @@ export default function Header() {
           <Link
             onClick={() => setMenuOpen(!menuOpen)}
             href="/philosophy"
-            className="font-medium py-2 hover:text-[var(--primary)]"
+            className="font-medium py-2 hover:text-(--primary)"
           >
             Our Philosophy
           </Link>
@@ -197,7 +197,7 @@ export default function Header() {
           <Link
             onClick={() => setMenuOpen(!menuOpen)}
             href="/contactus"
-            className="font-medium hover:text-[var(--primary)]"
+            className="font-medium hover:text-(--primary)"
           >
             Contact Us
           </Link>

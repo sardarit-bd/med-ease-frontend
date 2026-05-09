@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isopenActionForm: false,
-  issignin: true,
+  issignin: false,
   issignup: false,
   isforgot: false,
   userRole: "patient",
@@ -12,14 +12,23 @@ export const authSlice = createSlice({
   name: "Auth",
   initialState,
   reducers: {
-    setissignin: (state) => {
-      state.issignin = !state.issignin;
+    setissignin: (state, action) => {
+      state.issignin = action.payload;
+      state.issignup = false;
+      state.isforgot = false;
+      // console.log("issignin", state.issignin);
     },
-    setissignup: (state) => {
-      state.issignup = !state.issignup;
+    setissignup: (state, action) => {
+      state.issignup = action.payload;
+      state.issignin = false;
+      state.isforgot = false;
+      // console.log("issignup", state.issignup);
     },
-    setisforgot: (state) => {
-      state.isforgot = !state.isforgot;
+    setisforgot: (state, action) => {
+      state.isforgot = action.payload;
+      state.issignin = false;
+      state.issignup = false;
+      // console.log("isforgot", state.isforgot);
     },
     setUserRole: (state, action) => {
       state.userRole = action.payload;
