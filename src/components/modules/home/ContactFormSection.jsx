@@ -13,7 +13,7 @@ export default function ContactFormSection() {
         {/* Title */}
         <h2 className="text-center text-2xl md:text-3xl font-semibold text-gray-900 mb-10">
           Prêt à être Accompagné(e)?{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#3074B5] to-[#61D0BF]">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-[#3074B5] to-[#61D0BF]">
             Contactez-nous !
           </span>
         </h2>
@@ -37,29 +37,29 @@ export default function ContactFormSection() {
           </div>
 
           {/* Form Container */}
-          <div className="w-full md:max-w-lg w-full mx-auto bg-white rounded-lg p-8 customboxshadow">
+          <div className="w-full md:max-w-lg  mx-auto bg-white rounded-lg p-8 customboxshadow">
             <form className="flex flex-col gap-4">
               <input
                 type="text"
                 placeholder="Prénom"
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
+                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700"
               />
               <input
                 type="text"
                 placeholder="Nom"
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
+                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700"
               />
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
+                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700"
               />
               <input
                 type="tel"
                 placeholder="Téléphone"
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700"
+                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700"
               />
-              <select className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700">
+              <select className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700">
                 <option>Besoin principal</option>
                 <option>Orientation médicale</option>
                 <option>Transport médical</option>
@@ -69,12 +69,12 @@ export default function ContactFormSection() {
               <textarea
                 rows={3}
                 placeholder="Message"
-                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--brandColor,#04d2f0)] text-gray-700 resize-none"
+                className="w-full border border-gray-200 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-(--brandColor,#04d2f0) text-gray-700 resize-none"
               ></textarea>
 
               <button
                 type="submit"
-                className="w-full mt-2 py-3 rounded-md text-white font-medium shadow-md transition-transform hover:scale-[1.02] bg-gradient-to-r from-[var(--primary)] to-[var(--secondary)] text-white flex items-center justify-center gap-3"
+                className="w-full mt-2 py-3 rounded-md text-white font-medium shadow-md transition-transform hover:scale-[1.02] bg-linear-to-r from-(--primary) to-(--secondary)  flex items-center justify-center gap-3"
               >
                 {isLoading && <SpinLoader />}
                 Envoyer ma Demande
